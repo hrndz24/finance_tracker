@@ -1,0 +1,6 @@
+package by.javatr.financetracker.bean;
+
+public enum ExpenseCategory {
+    BILLS, CAR, CLOTHES, COMMUNICATIONS, EATING_OUT, FOOD, ENTERTAINMENT,
+    GIFTS, HEALTH, HOME, PETS, SPORTS, TAXI, TOILETRY, TRANSPORT, HABITS, OTHER
+}
