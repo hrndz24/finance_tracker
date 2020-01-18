@@ -13,6 +13,10 @@ public class FileUserDAO implements UserDAO {
     private File usersFile;
     private String dataSeparator;
 
+    public FileUserDAO(){
+
+    }
+
     public FileUserDAO(File file, String dataSeparator) {
         this.usersFile = file;
         this.dataSeparator = dataSeparator;
@@ -23,8 +27,20 @@ public class FileUserDAO implements UserDAO {
         this.dataSeparator = dataSeparator;
     }
 
+    public void setUsersFile(File usersFile) {
+        this.usersFile = usersFile;
+    }
+
+    public void setUsersFile(String path) {
+        this.usersFile = new File(path);
+    }
+
+    public void setDataSeparator(String dataSeparator) {
+        this.dataSeparator = dataSeparator;
+    }
+
     @Override
-    public void addUser(User user, char[] password) throws FailedAddUserException {
+    public void addUser(User user, char[] password) throws DAOException {
         try {
             BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(usersFile, true));
             int hashedPassword = passwordHashCode(password);
@@ -33,12 +49,12 @@ public class FileUserDAO implements UserDAO {
             bufferedWriter.close();
         } catch (IOException e) {
             //TODO create message
-            throw new FailedAddUserException(e);
+            throw new FailedAddException(e);
         }
     }
 
     @Override
-    public boolean hasUser(String logIn, char[] password) throws FailedFindUserException {
+    public boolean hasUser(String logIn, char[] password) throws DAOException {
         try {
             Scanner scanner = new Scanner(usersFile);
             int hashedPassword = passwordHashCode(password);
@@ -51,13 +67,13 @@ public class FileUserDAO implements UserDAO {
             }
         } catch (FileNotFoundException e) {
             //TODO create message
-            throw new FailedFindUserException("Failed to access file", e);
+            throw new FailedFindException("Failed to access file", e);
         }
         return false;
     }
 
     @Override
-    public boolean hasUser(String logIn) throws FailedFindUserException {
+    public boolean hasUser(String logIn) throws DAOException {
         try {
             Scanner scanner = new Scanner(usersFile);
             String[] userInfo;
@@ -69,13 +85,13 @@ public class FileUserDAO implements UserDAO {
             }
         } catch (FileNotFoundException e) {
             //TODO create message
-            throw new FailedFindUserException("Failed to access file", e);
+            throw new FailedFindException("Failed to access file", e);
         }
         return false;
     }
 
     @Override
-    public void deleteUser(User user) throws UserNotFoundException, FailedDeleteUserException {
+    public void deleteUser(User user) throws DAOException {
         try {
             RandomAccessFile randomAccessFile = new RandomAccessFile(usersFile, "rw");
             RandomAccessFile transfer = new RandomAccessFile("transfer.txt", "rw");
@@ -107,12 +123,12 @@ public class FileUserDAO implements UserDAO {
             transfer.setLength(0);
         } catch (IOException e) {
             //TODO create message
-            throw new FailedDeleteUserException(e);
+            throw new FailedDeleteException(e);
         }
     }
 
     @Override
-    public void editLogIn(String oldLogIn, String newLogIn) throws UserNotFoundException, FailedEditUserInfoException {
+    public void editLogIn(User user, String newLogIn) throws DAOException {
         try {
             RandomAccessFile randomAccessFile = new RandomAccessFile(usersFile, "rw");
             RandomAccessFile transfer = new RandomAccessFile("transfer.txt", "rw");
@@ -124,7 +140,7 @@ public class FileUserDAO implements UserDAO {
             boolean userFound = false;
             while ((currentLine = randomAccessFile.readLine()) != null) {
                 userInfo = currentLine.split(dataSeparator);
-                if (!userInfo[0].equals(oldLogIn)) {
+                if (!userInfo[2].equals(String.valueOf(user.getId()))) {
                     continue;
                 }
                 userFound = true;
@@ -147,12 +163,12 @@ public class FileUserDAO implements UserDAO {
             transfer.setLength(0);
         } catch (IOException e) {
             //TODO create message
-            throw new FailedEditUserInfoException(e);
+            throw new FailedEditInfoException(e);
         }
     }
 
     @Override
-    public void editPassword(String logIn, char[] newPassword) throws UserNotFoundException, FailedEditUserInfoException {
+    public void editPassword(User user, char[] newPassword) throws DAOException {
         try {
             RandomAccessFile randomAccessFile = new RandomAccessFile(usersFile, "rw");
             RandomAccessFile transfer = new RandomAccessFile("transfer.txt", "rw");
@@ -164,7 +180,7 @@ public class FileUserDAO implements UserDAO {
             boolean userFound = false;
             while ((currentLine = randomAccessFile.readLine()) != null) {
                 userInfo = currentLine.split(dataSeparator);
-                if (!userInfo[0].equals(logIn)) {
+                if (!userInfo[2].equals(String.valueOf(user.getId()))) {
                     continue;
                 }
                 userFound = true;
@@ -188,12 +204,12 @@ public class FileUserDAO implements UserDAO {
             transfer.setLength(0);
         } catch (IOException e) {
             //TODO create message
-            throw new FailedEditUserInfoException(e);
+            throw new FailedEditInfoException(e);
         }
     }
 
     @Override
-    public User getUser(String logIn) throws UserNotFoundException, UserDAOException {
+    public User getUser(String logIn) throws DAOException {
         try {
             BufferedReader bufferedReader = new BufferedReader(new FileReader(usersFile));
             String line;
@@ -207,7 +223,7 @@ public class FileUserDAO implements UserDAO {
             }
         } catch (IOException e) {
             //TODO create message
-            throw new UserDAOException(e);
+            throw new DAOException(e);
         }
         //TODO create message
         throw new UserNotFoundException();

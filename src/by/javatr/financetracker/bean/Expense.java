@@ -5,48 +5,48 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.Date;
 
-public class Expense extends Transaction implements Serializable {
+public class Expense extends Transaction implements Serializable, Cloneable {
 
-    private ExpenseCategory category;
+    //private ExpenseCategory category;
 
     public Expense() {
         super();
     }
 
-    public Expense(BigDecimal sum, ExpenseCategory category, Account account, Date date, String note) {
+    public Expense(BigDecimal sum, ExpenseCategory category, int accountId, Date date, String note) {
         /*
         super(date);
         this.sum = sum.setScale(2, RoundingMode.HALF_UP);
-        this.account = account;
+        this.accountId = accountId;
         this.category = category;
         this.date = date; */
-        this(sum, category, account, date);
+        this(sum, category, accountId, date);
         this.note = note;
     }
 
-    public Expense(BigDecimal sum, ExpenseCategory category, Account account, Date date) {
+    public Expense(BigDecimal sum, ExpenseCategory category, int accountId, Date date) {
         super(date);
         this.sum = sum.setScale(2, RoundingMode.HALF_UP);
-        this.account = account;
+        this.accountId = accountId;
         this.category = category;
         this.date = date;
     }
 
-    public Expense(BigDecimal sum, ExpenseCategory category, Account account, Date date, String note, int id) {
+    public Expense(BigDecimal sum, ExpenseCategory category, int accountId, Date date, String note, int id) {
         /*
         super(id);
         this.sum = sum.setScale(2, RoundingMode.HALF_UP);
-        this.account = account;
+        this.accountId = accountId;
         this.category = category;
         this.date = date; */
-        this(sum, category, account, date, id);
+        this(sum, category, accountId, date, id);
         this.note = note;
     }
 
-    public Expense(BigDecimal sum, ExpenseCategory category, Account account, Date date, int id) {
+    public Expense(BigDecimal sum, ExpenseCategory category, int accountId, Date date, int id) {
         super(id);
         this.sum = sum.setScale(2, RoundingMode.HALF_UP);
-        this.account = account;
+        this.accountId = accountId;
         this.category = category;
         this.date = date;
     }
@@ -66,20 +66,20 @@ public class Expense extends Transaction implements Serializable {
         return sum;
     }
 
-    public void setCategory(ExpenseCategory category) {
-        this.category = category;
+   // public void setCategory(ExpenseCategory category) {
+     //   this.category = category;
+    //}
+
+    //public ExpenseCategory getCategory() {
+      //  return category;
+    //}
+
+    public void setAccount(int accountId) {
+        this.accountId = accountId;
     }
 
-    public ExpenseCategory getCategory() {
-        return category;
-    }
-
-    public void setAccount(Account account) {
-        this.account = account;
-    }
-
-    public Account getAccount() {
-        return account;
+    public int getAccountId() {
+        return accountId;
     }
 
     public void setNote(String note) {
@@ -104,7 +104,7 @@ public class Expense extends Transaction implements Serializable {
         int result = 1;
         result = prime * result + ((category == null) ? 0 : category.hashCode());
         result = (int) (prime * result + sum.doubleValue());
-        result = prime * result + ((account == null) ? 0 : account.hashCode());
+        result = prime * result + accountId;
         result = prime * result + ((date == null) ? 0 : date.hashCode());
         result = prime * result + ((note == null) ? 0 : note.hashCode());
         return result * super.hashCode();
@@ -134,16 +134,6 @@ public class Expense extends Transaction implements Serializable {
             }
         }
 
-        if (account == null) {
-            if (otherExpense.account != null) {
-                return false;
-            }
-        } else {
-            if (!account.equals(otherExpense.account)) {
-                return false;
-            }
-        }
-
         if (date == null) {
             if (otherExpense.date != null) {
                 return false;
@@ -168,12 +158,21 @@ public class Expense extends Transaction implements Serializable {
             return false;
         }
 
+        if(accountId!= otherExpense.accountId){
+            return false;
+        }
+
         return true;
     }
 
     @Override
     public String toString() {
-        return getClass().getName() + "@" + "sum: " + sum + ", category: " + category + ", account: " + account
+        return getClass().getName() + "@" + "sum: " + sum + ", category: " + category + ", accountId: " + accountId
                 + ", date: " + date + ", note: " + note;
+    }
+
+    @Override
+    protected Object clone() throws CloneNotSupportedException {
+        return super.clone();
     }
 }

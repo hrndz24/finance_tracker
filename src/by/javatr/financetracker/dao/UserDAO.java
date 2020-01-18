@@ -6,18 +6,18 @@ import by.javatr.financetracker.dao.exception.*;
 public interface UserDAO {
 
     //TODO maybe replace all those exceptions with UserDAOException
-    void addUser(User user, char[] password) throws FailedAddUserException;
+    void addUser(User user, char[] password) throws DAOException;
 
-    boolean hasUser(String logIn, char[] password) throws FailedFindUserException;
+    boolean hasUser(String logIn, char[] password) throws DAOException;
 
-    boolean hasUser(String logIn) throws FailedFindUserException;
+    boolean hasUser(String logIn) throws DAOException;
 
-    void deleteUser(User user) throws UserNotFoundException, FailedDeleteUserException;
+    void deleteUser(User user) throws DAOException;
 
-    void editLogIn(String oldLogIn, String newLogIn) throws UserNotFoundException, FailedEditUserInfoException;
+    void editLogIn(User user, String newLogIn) throws DAOException;
 
-    void editPassword(String logIn, char[] newPassword) throws UserNotFoundException, FailedEditUserInfoException;
+    void editPassword(User user, char[] newPassword) throws DAOException;
 
     //TODO maybe it should have FailedGetUserException
-    User getUser(String logIn) throws UserNotFoundException, UserDAOException;
+    User getUser(String logIn) throws DAOException;
 }

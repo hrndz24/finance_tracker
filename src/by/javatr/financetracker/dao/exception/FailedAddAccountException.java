@@ -1,6 +1,6 @@
 package by.javatr.financetracker.dao.exception;
 
-public class FailedAddAccountException extends Exception {
+public class FailedAddAccountException extends DAOException {
     public FailedAddAccountException() {
     }
 

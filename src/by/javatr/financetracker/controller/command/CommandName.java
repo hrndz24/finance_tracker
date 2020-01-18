@@ -1,0 +1,8 @@
+package by.javatr.financetracker.controller.command;
+
+public enum CommandName {
+    SIGN_UP, LOG_IN, EDIT_LOG_IN, CHANGE_PASSWORD, DEACTIVATE_USER_ACCOUNT,
+    ADD_EXPENSE, ADD_INCOME, GET_TRANSACTIONS_HISTORY, GET_CURRENT_BALANCE,
+    GET_ACCOUNTS, GET_ACCOUNT,
+    WRONG_REQUEST
+}

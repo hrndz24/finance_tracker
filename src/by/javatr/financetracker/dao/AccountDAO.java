@@ -9,11 +9,13 @@ import java.util.ArrayList;
 public interface AccountDAO {
 
     //TODO think of having the common exception AccountDAOException
-    void addAccount(User user, Account account) throws FailedAddAccountException;
+    void addAccount(User user, Account account) throws DAOException;
 
-    void editAccount(User user, Account account) throws FailedEditAccountException, AccountNotFoundException;
+    void editAccount(User user, Account account) throws DAOException;
 
-    void deleteAccount(User user, Account account) throws AccountNotFoundException, FailedDeleteAccountException;
+    void deleteAccount(User user, int accountId) throws DAOException;
 
-    ArrayList<Account> getAllAccounts(User user) throws UserNotFoundException, AccountDAOException;
+    ArrayList<Account> getAllAccounts(User user) throws DAOException;
+
+    boolean hasAccount(User user, int accountId) throws DAOException;
 }

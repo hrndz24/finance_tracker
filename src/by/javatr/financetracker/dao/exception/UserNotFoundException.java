@@ -1,6 +1,6 @@
 package by.javatr.financetracker.dao.exception;
 
-public class UserNotFoundException extends  Exception {
+public class UserNotFoundException extends DAOException {
     public UserNotFoundException() {
     }
 

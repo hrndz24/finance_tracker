@@ -1,18 +1,18 @@
 package by.javatr.financetracker.dao;
 
 import by.javatr.financetracker.bean.Income;
-import by.javatr.financetracker.dao.exception.IncomeNotFoundException;
-import by.javatr.financetracker.dao.exception.UserNotFoundException;
+import by.javatr.financetracker.bean.User;
+import by.javatr.financetracker.dao.exception.DAOException;
 
 import java.util.ArrayList;
 
 public interface IncomeDAO {
 
-    void addIncome(Income income);
+    void addIncome(User user, Income income) throws DAOException;
 
-    void editIncome(Income income) throws IncomeNotFoundException;
+    void editIncome(User user, Income income) throws DAOException;
 
-    void deleteIncome(Income income) throws IncomeNotFoundException;
+    void deleteIncome(User user, Income income) throws DAOException;
 
-    ArrayList<Income> getAllIncomes(String userLogIn) throws UserNotFoundException;
+    ArrayList<Income> getAllIncomes(User user) throws DAOException;
 }

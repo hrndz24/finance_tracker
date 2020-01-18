@@ -43,10 +43,33 @@ public class User implements Serializable {
         this.logIn = logIn;
     }
 
-    //TODO add setters and getters for an object from collection
+    //TODO add setters and getters for an object from collection via id
     public ArrayList<Account> getAccounts() {
         return accounts;
     }
+
+    public Account getAccount(int accountId) {
+        for (Account account : accounts) {
+            if (account.getId() == accountId) {
+                return account;
+            }
+        }
+        //TODO logically it should throw exception bu it can't
+        return null;
+    }
+
+    public boolean hasAccount(int accountId) {
+        for (Account account : accounts) {
+            if (account.getId() == accountId) {
+                return true;
+            }
+        }
+        return false;
+    }
+    /*
+    public void addAccount(Account account){
+        accounts.add(account);
+    } */
 
     public void setAccounts(ArrayList<Account> accounts) {
         this.accounts = accounts;
@@ -55,6 +78,30 @@ public class User implements Serializable {
     public ArrayList<Transaction> getTransactions() {
         return transactions;
     }
+
+    public Transaction getTransaction(int transactionId) {
+        for (Transaction transaction : transactions) {
+            if (transaction.getId() == transactionId) {
+                return transaction;
+            }
+        }
+        //TODO logically it should throw exception
+        return null;
+    }
+
+    public boolean hasTransaction(int transactionId) {
+        for (Transaction transaction : transactions) {
+            if (transaction.getId() == transactionId) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /*
+    public void addTransaction(Transaction transaction) {
+        transactions.add(transaction);
+    } */
 
     public void setTransactions(ArrayList<Transaction> transactions) {
         this.transactions = transactions;

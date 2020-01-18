@@ -26,7 +26,7 @@ public class FileAccountDAO implements AccountDAO {
     }
 
     @Override
-    public void addAccount(User user, Account account) throws FailedAddAccountException {
+    public void addAccount(User user, Account account) throws DAOException {
         try {
             RandomAccessFile randomAccessFile = new RandomAccessFile(accountsFile, "rw");
             RandomAccessFile transfer = new RandomAccessFile("transfer.txt", "rw");
@@ -63,7 +63,7 @@ public class FileAccountDAO implements AccountDAO {
     }
 
     @Override
-    public void editAccount(User user, Account account) throws FailedEditAccountException, AccountNotFoundException {
+    public void editAccount(User user, Account account) throws DAOException {
         try {
             RandomAccessFile randomAccessFile = new RandomAccessFile(accountsFile, "rw");
             RandomAccessFile transfer = new RandomAccessFile("transfer.txt", "rw");
@@ -83,7 +83,7 @@ public class FileAccountDAO implements AccountDAO {
             }
             if (currentLine == null) {
                 //TODO create message
-                throw new AccountNotFoundException();
+                throw new DAOException();
             }
             long position = randomAccessFile.getFilePointer();
             sourceChannel.position(position); // sets the pointer at @position to start transferring info from it
@@ -101,7 +101,7 @@ public class FileAccountDAO implements AccountDAO {
     }
 
     @Override
-    public void deleteAccount(User user, Account account) throws AccountNotFoundException, FailedDeleteAccountException {
+    public void deleteAccount(User user, int accountId) throws DAOException {
         try {
             RandomAccessFile randomAccessFile = new RandomAccessFile(accountsFile, "rw");
             RandomAccessFile transfer = new RandomAccessFile("transfer.txt", "rw");
@@ -114,14 +114,14 @@ public class FileAccountDAO implements AccountDAO {
             while ((currentLine = randomAccessFile.readLine()) != null) {
                 userId = currentLine.split(dataSeparator)[0];
                 userAccountId = currentLine.split(dataSeparator)[1];
-                if (!(userId.equals(String.valueOf(id)) && userAccountId.equals(String.valueOf(account.getId())))) {
+                if (!(userId.equals(String.valueOf(id)) && userAccountId.equals(String.valueOf(accountId)))) {
                     continue;
                 }
                 break;
             }
             if (currentLine == null) {
                 //TODO create message
-                throw new AccountNotFoundException();
+                throw new DAOException();
             }
             long position = randomAccessFile.getFilePointer();
             sourceChannel.position(position); // sets the pointer at @position to start transferring info from it
@@ -138,14 +138,14 @@ public class FileAccountDAO implements AccountDAO {
     }
 
     @Override
-    public ArrayList<Account> getAllAccounts(User user) throws UserNotFoundException, AccountDAOException {
+    public ArrayList<Account> getAllAccounts(User user) throws DAOException {
 
         try {
             boolean isFound = false;
             ArrayList<Account> accounts = new ArrayList<>();
             BufferedReader bufferedReader = new BufferedReader(new FileReader(accountsFile));
             String currentLine, userId;
-            String [] accountInfo;
+            String[] accountInfo;
             int id = user.getId();
             while ((currentLine = bufferedReader.readLine()) != null) {
                 accountInfo = currentLine.split(dataSeparator);
@@ -164,7 +164,31 @@ public class FileAccountDAO implements AccountDAO {
             return accounts;
         } catch (IOException e) {
             //TODO create message
-            throw new AccountDAOException(e);
+            throw new DAOException(e);
         }
+    }
+
+    @Override
+    public boolean hasAccount(User user, int accountId) throws DAOException {
+        boolean isFound = false;
+        try {
+            BufferedReader bufferedReader = new BufferedReader(new FileReader(accountsFile));
+            String currentLine, currentAccountUserId, currentAccountId;
+            String[] accountInfo;
+            int userId = user.getId();
+            while ((currentLine = bufferedReader.readLine()) != null) {
+                accountInfo = currentLine.split(dataSeparator);
+                currentAccountUserId = accountInfo[0];
+                currentAccountId = accountInfo[1];
+                if (!(currentAccountUserId.equals(String.valueOf(userId)) && currentAccountId.equals(String.valueOf(accountId)))) {
+                    continue;
+                }
+                isFound = true;
+            }
+        } catch (IOException e) {
+            //TODO create message
+            throw new DAOException(e);
+        }
+        return isFound;
     }
 }

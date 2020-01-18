@@ -5,7 +5,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.Date;
 
-public class Account implements Serializable {
+public class Account implements Serializable, Cloneable {
     private String name;
     private BigDecimal balance;
     private final int id;
@@ -89,5 +89,10 @@ public class Account implements Serializable {
     @Override
     public String toString() {
         return getClass().getName() + "@" + "name: " + name + ", balance: " + balance;
+    }
+
+    @Override
+    protected Object clone() throws CloneNotSupportedException {
+        return super.clone();
     }
 }
