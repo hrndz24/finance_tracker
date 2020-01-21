@@ -2,6 +2,7 @@ package by.javatr.financetracker.controller.command.impl;
 
 import by.javatr.financetracker.bean.User;
 import by.javatr.financetracker.controller.command.Command;
+import by.javatr.financetracker.controller.stringvalues.StringProperty;
 import by.javatr.financetracker.service.ClientService;
 import by.javatr.financetracker.service.exception.ClientServiceException;
 import by.javatr.financetracker.service.factory.ServiceFactory;
@@ -21,10 +22,9 @@ public class LogIn implements Command {
 
         try {
             User user = clientService.logIn(logIn, password);
-            response = user.getLogIn() + delimiter + user.getId();
+            response = user.getId() + delimiter + user.getLogIn();
         } catch (ClientServiceException e) {
-            e.printStackTrace();
-            response = e.getMessage();
+            response = StringProperty.getStringValue("logInFailed") + e.getMessage();
         }
         return response;
     }

@@ -4,44 +4,41 @@ import by.javatr.financetracker.bean.*;
 import by.javatr.financetracker.service.exception.FinanceTrackerServiceException;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.Date;
+import java.util.Map;
 
 public interface FinanceTrackerService {
 
-    void setUser(User user) throws FinanceTrackerServiceException;
+    void addExpense(int userId, Expense expense) throws FinanceTrackerServiceException;
 
-    void addExpense(User user, Expense expense) throws FinanceTrackerServiceException;
+    void editExpense(int userId, Expense editedExpense) throws FinanceTrackerServiceException;
 
-    //TODO overload this method with different data
-    void editExpense(User user, Expense editedExpense) throws FinanceTrackerServiceException;
+    void deleteExpense(int userId, int expenseId) throws FinanceTrackerServiceException;
 
-    void deleteExpense(User user, Expense expense) throws FinanceTrackerServiceException;
+    void addIncome(int userId, Income income) throws FinanceTrackerServiceException;
 
-    void addIncome(User user, Income income) throws FinanceTrackerServiceException;
+    void editIncome(int userId, Income editedIncome) throws FinanceTrackerServiceException;
 
-    void editIncome(User user, Income editedIncome) throws FinanceTrackerServiceException;
+    void deleteIncome(int userId, int incomeId) throws FinanceTrackerServiceException;
 
-    void deleteIncome(User user, Income income) throws FinanceTrackerServiceException;
+    void addAccount(int userId, Account account) throws FinanceTrackerServiceException;
 
-    void addAccount(User user, Account account) throws FinanceTrackerServiceException;
+    void editAccount(int userId, Account editedAccount) throws FinanceTrackerServiceException;
 
-    void editAccount(User user, Account editedAccount) throws FinanceTrackerServiceException;
+    void deleteAccount(int userId, int accountId) throws FinanceTrackerServiceException;
 
-    void deleteAccount(User user, Account account) throws FinanceTrackerServiceException;
+    Account[] getAccounts(int userId) throws FinanceTrackerServiceException;
 
-    ArrayList<Account> getAccounts(User user) throws FinanceTrackerServiceException;
+    Transaction[] getTransactionsHistory(int userId) throws FinanceTrackerServiceException;
 
-    ArrayList<Transaction> getTransactionsHistory(User user) throws FinanceTrackerServiceException;
+    Transaction[] getTransactionsHistory(int userId, Date date) throws FinanceTrackerServiceException;
 
-    ArrayList<Transaction> getTransactionsHistory(User user, Date date) throws FinanceTrackerServiceException;
+    void transferMoney(int userId, Account accountSender, Account accountReceiver, BigDecimal sum) throws FinanceTrackerServiceException;
 
-    void transferMoney(User user, Account accountSender, Account accountReceiver, BigDecimal sum) throws FinanceTrackerServiceException;
+    BigDecimal getCurrentBalance(int userId) throws FinanceTrackerServiceException;
 
-    BigDecimal getCurrentBalance(User user) throws FinanceTrackerServiceException;
+    Map<ExpenseCategory, BigDecimal> getExpensesByCategory(int userId) throws FinanceTrackerServiceException;
 
-    /**
-     * HashMap<ExpenseCategory, BigDecimal> getExpensesByCategory();
-     * HashMap<IncomeCategory, BigDecimal> getIncomesByCategory();
-     * */
+    Map<IncomeCategory, BigDecimal> getIncomesByCategory(int userId) throws FinanceTrackerServiceException;
+
 }

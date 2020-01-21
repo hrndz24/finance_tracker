@@ -2,20 +2,19 @@ package by.javatr.financetracker.dao.impl;
 
 import by.javatr.financetracker.bean.User;
 import by.javatr.financetracker.dao.UserDAO;
-import by.javatr.financetracker.dao.exception.*;
+import by.javatr.financetracker.dao.exception.DAOException;
+import by.javatr.financetracker.dao.stringvalues.StringProperty;
 
 import java.io.*;
 import java.nio.channels.FileChannel;
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class FileUserDAO implements UserDAO {
 
     private File usersFile;
     private String dataSeparator;
-
-    public FileUserDAO(){
-
-    }
+    private File transferFile = new File(StringProperty.getStringValue("transferFilePath"));
 
     public FileUserDAO(File file, String dataSeparator) {
         this.usersFile = file;
@@ -24,18 +23,6 @@ public class FileUserDAO implements UserDAO {
 
     public FileUserDAO(String path, String dataSeparator) {
         this.usersFile = new File(path);
-        this.dataSeparator = dataSeparator;
-    }
-
-    public void setUsersFile(File usersFile) {
-        this.usersFile = usersFile;
-    }
-
-    public void setUsersFile(String path) {
-        this.usersFile = new File(path);
-    }
-
-    public void setDataSeparator(String dataSeparator) {
         this.dataSeparator = dataSeparator;
     }
 
@@ -48,8 +35,7 @@ public class FileUserDAO implements UserDAO {
                     + hashedPassword + dataSeparator + user.getId() + "\n");
             bufferedWriter.close();
         } catch (IOException e) {
-            //TODO create message
-            throw new FailedAddException(e);
+            throw new DAOException(e);
         }
     }
 
@@ -66,8 +52,7 @@ public class FileUserDAO implements UserDAO {
                 }
             }
         } catch (FileNotFoundException e) {
-            //TODO create message
-            throw new FailedFindException("Failed to access file", e);
+            throw new DAOException(e);
         }
         return false;
     }
@@ -84,31 +69,30 @@ public class FileUserDAO implements UserDAO {
                 }
             }
         } catch (FileNotFoundException e) {
-            //TODO create message
-            throw new FailedFindException("Failed to access file", e);
+            throw new DAOException(e);
         }
         return false;
     }
 
     @Override
-    public void deleteUser(User user) throws DAOException {
+    public void deleteUser(int userId) throws DAOException {
         try {
             RandomAccessFile randomAccessFile = new RandomAccessFile(usersFile, "rw");
-            RandomAccessFile transfer = new RandomAccessFile("transfer.txt", "rw");
+            RandomAccessFile transfer = new RandomAccessFile(transferFile, "rw");
 
             FileChannel sourceChannel = randomAccessFile.getChannel();
             FileChannel transferChannel = transfer.getChannel();
-            String currentLine, userLogIn;
-            String logIn = user.getLogIn();
+            String currentLine, currentUserId;
+
             boolean userFound = false;
             while ((currentLine = randomAccessFile.readLine()) != null) {
-                userLogIn = currentLine.split(dataSeparator)[0];
-                if (!userLogIn.equals(logIn)) {
+                currentUserId = currentLine.split(dataSeparator)[2];
+                if (!currentUserId.equals(String.valueOf(userId))) {
                     continue;
                 }
                 userFound = true;
                 long position = randomAccessFile.getFilePointer();
-                sourceChannel.position(position); // sets the pointer at @position to start transferring info from it
+                sourceChannel.position(position);
                 transferChannel.transferFrom(sourceChannel, 0, sourceChannel.size() - position);
                 randomAccessFile.setLength(position - currentLine.length() - 1);
                 sourceChannel.transferFrom(transferChannel, randomAccessFile.getFilePointer(), transferChannel.size());
@@ -116,22 +100,20 @@ public class FileUserDAO implements UserDAO {
             }
 
             if (!userFound) {
-                //TODO create message
-                throw new UserNotFoundException();
+                throw new DAOException("User not found");
             }
 
             transfer.setLength(0);
         } catch (IOException e) {
-            //TODO create message
-            throw new FailedDeleteException(e);
+            throw new DAOException(e);
         }
     }
 
     @Override
-    public void editLogIn(User user, String newLogIn) throws DAOException {
+    public void editLogIn(int userId, String newLogIn) throws DAOException {
         try {
             RandomAccessFile randomAccessFile = new RandomAccessFile(usersFile, "rw");
-            RandomAccessFile transfer = new RandomAccessFile("transfer.txt", "rw");
+            RandomAccessFile transfer = new RandomAccessFile(transferFile, "rw");
 
             FileChannel sourceChannel = randomAccessFile.getChannel();
             FileChannel transferChannel = transfer.getChannel();
@@ -140,12 +122,12 @@ public class FileUserDAO implements UserDAO {
             boolean userFound = false;
             while ((currentLine = randomAccessFile.readLine()) != null) {
                 userInfo = currentLine.split(dataSeparator);
-                if (!userInfo[2].equals(String.valueOf(user.getId()))) {
+                if (!userInfo[2].equals(String.valueOf(userId))) {
                     continue;
                 }
                 userFound = true;
                 long position = randomAccessFile.getFilePointer();
-                sourceChannel.position(position); // sets the pointer at @position to start transferring info from it
+                sourceChannel.position(position);
                 transferChannel.transferFrom(sourceChannel, 0, sourceChannel.size() - position);
                 randomAccessFile.setLength(position - currentLine.length() - 1);
                 randomAccessFile.seek(position - currentLine.length() - 1);
@@ -156,22 +138,20 @@ public class FileUserDAO implements UserDAO {
             }
 
             if (!userFound) {
-                //TODO create message
-                throw new UserNotFoundException();
+                throw new DAOException("User not found");
             }
 
             transfer.setLength(0);
         } catch (IOException e) {
-            //TODO create message
-            throw new FailedEditInfoException(e);
+            throw new DAOException(e);
         }
     }
 
     @Override
-    public void editPassword(User user, char[] newPassword) throws DAOException {
+    public void editPassword(int userId, char[] newPassword) throws DAOException {
         try {
             RandomAccessFile randomAccessFile = new RandomAccessFile(usersFile, "rw");
-            RandomAccessFile transfer = new RandomAccessFile("transfer.txt", "rw");
+            RandomAccessFile transfer = new RandomAccessFile(transferFile, "rw");
 
             FileChannel sourceChannel = randomAccessFile.getChannel();
             FileChannel transferChannel = transfer.getChannel();
@@ -180,16 +160,16 @@ public class FileUserDAO implements UserDAO {
             boolean userFound = false;
             while ((currentLine = randomAccessFile.readLine()) != null) {
                 userInfo = currentLine.split(dataSeparator);
-                if (!userInfo[2].equals(String.valueOf(user.getId()))) {
+                if (!userInfo[2].equals(String.valueOf(userId))) {
                     continue;
                 }
                 userFound = true;
-                long position = randomAccessFile.getFilePointer()-14;
-                sourceChannel.position(position); // sets the pointer at @position to start transferring info from it
+                long position = randomAccessFile.getFilePointer() - userInfo[2].length()-3;
+                sourceChannel.position(position);
                 transferChannel.transferFrom(sourceChannel, 0, sourceChannel.size() - position);
-                //TODO hash should have a constant size instead of 5 here
-                randomAccessFile.setLength(position - 5 );
-                randomAccessFile.seek(position - 5 );
+
+                randomAccessFile.setLength(position - userInfo[1].length());
+                randomAccessFile.seek(position - userInfo[1].length());
                 int hashedPassword = passwordHashCode(newPassword);
                 randomAccessFile.writeBytes(String.valueOf(hashedPassword));
                 sourceChannel.transferFrom(transferChannel, randomAccessFile.getFilePointer(), transferChannel.size());
@@ -197,16 +177,15 @@ public class FileUserDAO implements UserDAO {
             }
 
             if (!userFound) {
-                //TODO create message
-                throw new UserNotFoundException();
+                throw new DAOException("User not found");
             }
 
             transfer.setLength(0);
         } catch (IOException e) {
-            //TODO create message
-            throw new FailedEditInfoException(e);
+            throw new DAOException(e);
         }
     }
+
 
     @Override
     public User getUser(String logIn) throws DAOException {
@@ -214,28 +193,20 @@ public class FileUserDAO implements UserDAO {
             BufferedReader bufferedReader = new BufferedReader(new FileReader(usersFile));
             String line;
             String[] userInfo;
-            while((line = bufferedReader.readLine())!=null){
+            while ((line = bufferedReader.readLine()) != null) {
                 userInfo = line.split(dataSeparator);
-                if(logIn.equals(userInfo[0])){
+                if (logIn.equals(userInfo[0])) {
                     int id = Integer.parseInt(userInfo[2]);
                     return new User(logIn, id);
                 }
             }
         } catch (IOException e) {
-            //TODO create message
             throw new DAOException(e);
         }
-        //TODO create message
-        throw new UserNotFoundException();
+        throw new DAOException("User not found");
     }
 
-    //TODO improve this to look like a normal thing
     private int passwordHashCode(char[] password) {
-        int result = 1;
-        int key = 5;
-        for (int i = 0; i < password.length; i++) {
-            result *= password[i] * Math.pow(key, i);
-        }
-        return result;
+        return Arrays.hashCode(password);
     }
 }

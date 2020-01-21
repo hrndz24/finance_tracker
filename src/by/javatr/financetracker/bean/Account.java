@@ -5,7 +5,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.Date;
 
-public class Account implements Serializable, Cloneable {
+public class Account implements Serializable {
     private String name;
     private BigDecimal balance;
     private final int id;
@@ -48,11 +48,7 @@ public class Account implements Serializable, Cloneable {
 
     @Override
     public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((name == null) ? 0 : name.hashCode());
-        result = (int) (prime * result + balance.doubleValue());
-        return result * super.hashCode();
+        return id;
     }
 
     @Override
@@ -69,6 +65,9 @@ public class Account implements Serializable, Cloneable {
 
         Account otherAccount = (Account) obj;
 
+        if (id != otherAccount.id) {
+            return false;
+        }
         if (name == null) {
             if (otherAccount.name != null) {
                 return false;
@@ -88,11 +87,6 @@ public class Account implements Serializable, Cloneable {
 
     @Override
     public String toString() {
-        return getClass().getName() + "@" + "name: " + name + ", balance: " + balance;
-    }
-
-    @Override
-    protected Object clone() throws CloneNotSupportedException {
-        return super.clone();
+        return this.getClass().getName() + "@" + "name: " + name + ", balance: " + balance + ", id: " + id;
     }
 }

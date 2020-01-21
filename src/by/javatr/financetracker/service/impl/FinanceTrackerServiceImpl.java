@@ -4,284 +4,451 @@ import by.javatr.financetracker.bean.*;
 import by.javatr.financetracker.dao.AccountDAO;
 import by.javatr.financetracker.dao.ExpenseDAO;
 import by.javatr.financetracker.dao.IncomeDAO;
-import by.javatr.financetracker.dao.UserDAO;
-import by.javatr.financetracker.dao.exception.*;
+import by.javatr.financetracker.dao.exception.DAOException;
 import by.javatr.financetracker.dao.factory.DAOFactory;
 import by.javatr.financetracker.service.FinanceTrackerService;
-import by.javatr.financetracker.service.exception.*;
+import by.javatr.financetracker.service.exception.FinanceTrackerServiceException;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.Date;
+import java.util.*;
 
 public class FinanceTrackerServiceImpl implements FinanceTrackerService {
 
-    private User user;
     private DAOFactory daoFactory = DAOFactory.getInstance();
     private AccountDAO accountDAO = daoFactory.getAccountDAO();
     private ExpenseDAO expenseDAO = daoFactory.getExpenseDAO();
     private IncomeDAO incomeDAO = daoFactory.getIncomeDAO();
-    private UserDAO userDAO = daoFactory.getUserDao();
-
-    public FinanceTrackerServiceImpl() {
-
-    }
-
-    public void setUser(User user) throws FinanceTrackerServiceException {
-        if (user == null) {
-            throw new NullUserException();
-        }
-
-        this.user = user;
-    }
-
-    public FinanceTrackerServiceImpl(User user) throws FinanceTrackerServiceException {
-        if (user == null) {
-            throw new NullUserException();
-        }
-
-        this.user = user;
-    }
 
     @Override
-    public void addExpense(User user, Expense expense) throws FinanceTrackerServiceException {
-        if (user == null) {
-            throw new NullUserException();
-        }
+    public void addExpense(int userId, Expense expense) throws FinanceTrackerServiceException {
 
         if (expense == null) {
-            //TODO create message
-            throw new NullExpenseException();
+            throw new FinanceTrackerServiceException("Null expense.");
         }
 
         if (expense.getSum().doubleValue() < 0) {
-            //TODO create message
-            throw new InvalidTransactionSumException();
+            throw new FinanceTrackerServiceException("Invalid transaction sum.");
         }
 
         if (expense.getDate().after(new Date())) {
-            //TODO create message
-            throw new InvalidTransactionDateException();
+            throw new FinanceTrackerServiceException("Invalid transaction date.");
         }
 
-        if (expense.getNote().equals("null")) {
-            //TODO create message
-            throw new NullNoteException("null note");
+        if (expense.getNote() == null || expense.getNote().equals("null")) {
+            throw new FinanceTrackerServiceException("Null note.");
         }
 
         try {
-            if (!accountDAO.hasAccount(user, expense.getAccountId())) {
-                //TODO create message
-                throw new UserDoesNotHaveSuchAccountException();
+            if (!accountDAO.hasAccount(userId, expense.getAccountId())) {
+                throw new FinanceTrackerServiceException("User does not have such account.");
             }
         } catch (DAOException e) {
-            //TODO create message
-           throw new FinanceTrackerServiceException();
+            throw new FinanceTrackerServiceException("Failed to access accounts' data.", e);
         }
 
         try {
-            expenseDAO.addExpense(user, expense);
+            expenseDAO.addExpense(userId, expense);
         } catch (DAOException e) {
-            throw new FinanceTrackerServiceException("Failed to add expense", e);
+            throw new FinanceTrackerServiceException("Failed to access expenses' data.", e);
         }
     }
 
 
     @Override
-    public void editExpense(User user, Expense editedExpense) throws FinanceTrackerServiceException {
-        if (user == null) {
-            throw new NullUserException();
-        }
+    public void editExpense(int userId, Expense editedExpense) throws FinanceTrackerServiceException {
 
-        if (!user.hasTransaction(editedExpense.getId())) {
-            //TODO create message
-            throw new UserDoesNotHaveSuchExpenseException();
+        if (editedExpense == null) {
+            throw new FinanceTrackerServiceException("Null expense.");
         }
-        Expense expense = (Expense) user.getTransaction(editedExpense.getId());
 
         if (editedExpense.getSum().doubleValue() < 0) {
-            //TODO create message
-            throw new InvalidTransactionSumException();
+            throw new FinanceTrackerServiceException("Invalid transaction sum.");
         }
-        BigDecimal sumChange = editedExpense.getSum().subtract(expense.getSum());
-        expense.setSum(editedExpense.getSum());
-
-        expense.setCategory(editedExpense.getCategory());
 
         if (editedExpense.getDate().after(new Date())) {
-            //TODO create message
-            throw new InvalidTransactionDateException();
+            throw new FinanceTrackerServiceException("Invalid transaction date.");
         }
 
+        if (editedExpense.getNote() == null || editedExpense.getNote().equals("null")) {
+            throw new FinanceTrackerServiceException("Null note.");
+        }
+
+        try {
+            if (!accountDAO.hasAccount(userId, editedExpense.getAccountId())) {
+                throw new FinanceTrackerServiceException("User does not have such account.");
+            }
+        } catch (DAOException e) {
+            throw new FinanceTrackerServiceException("Failed to access accounts' data.", e);
+        }
+
+        Expense expense;
+        try {
+            expense = expenseDAO.getExpense(userId, editedExpense.getId());
+        } catch (DAOException e) {
+            throw new FinanceTrackerServiceException("Failed to access expenses' data", e);
+        }
+
+        BigDecimal sumChange = editedExpense.getSum().subtract(expense.getSum());
+        try {
+            if (editedExpense.getAccountId() != expense.getAccountId()) {
+                Account oldAccount = accountDAO.getAccount(userId, expense.getAccountId());
+                Account newAccount = accountDAO.getAccount(userId, editedExpense.getAccountId());
+                oldAccount.setBalance(oldAccount.getBalance().add(expense.getSum()));
+
+                newAccount.setBalance(newAccount.getBalance().subtract(editedExpense.getSum()));
+                accountDAO.editAccount(userId, oldAccount);
+                accountDAO.editAccount(userId, newAccount);
+            } else {
+                Account account = accountDAO.getAccount(userId, editedExpense.getAccountId());
+                account.setBalance(account.getBalance().subtract(sumChange));
+                accountDAO.editAccount(userId, account);
+            }
+        } catch (DAOException e) {
+            throw new FinanceTrackerServiceException("Failed to access accounts' data.", e);
+        }
+
+        expense.setSum(editedExpense.getSum());
+        expense.setCategory(editedExpense.getCategory());
         expense.setDate(editedExpense.getDate());
-
-        if (editedExpense.getNote() == null) {
-            //TODO create message
-            throw new NullNoteException();
-        }
         expense.setNote(editedExpense.getNote());
-
-        if (!user.hasAccount(editedExpense.getAccountId())) {
-            //TODO create message
-            throw new UserDoesNotHaveSuchAccountException();
-        }
-        expense.setAccount(editedExpense.getAccountId());
-
-        Account expenseAccount = user.getAccount(editedExpense.getAccountId());
-        expenseAccount.setBalance(expenseAccount.getBalance().subtract(sumChange));
+        expense.setAccountId(editedExpense.getAccountId());
 
         try {
-            expenseDAO.editExpense(this.user, expense);
+            expenseDAO.editExpense(userId, expense);
         } catch (DAOException e) {
-            //TODO create message
-            throw new FinanceTrackerServiceException(e);
-        }
-
-        try {
-            accountDAO.editAccount(this.user, expenseAccount);
-        } catch (DAOException e) {
-            //TODO create message
-            throw new FinanceTrackerServiceException(e);
+            throw new FinanceTrackerServiceException("Failed to access expenses' data.", e);
         }
 
     }
 
     @Override
-    public void deleteExpense(User user, Expense expense) throws FinanceTrackerServiceException {
-
-    }
-
-    @Override
-    public void addIncome(User user, Income income) throws FinanceTrackerServiceException {
-
-    }
-
-    @Override
-    public void editIncome(User user, Income newIncome) throws FinanceTrackerServiceException {
-
-    }
-
-    @Override
-    public void deleteIncome(User user, Income income) throws FinanceTrackerServiceException {
-
-    }
-
-    @Override
-    public void addAccount(User user, Account account) throws FinanceTrackerServiceException {
-
-    }
-
-    @Override
-    public void editAccount(User user, Account editedAccount) throws FinanceTrackerServiceException {
-
-    }
-
-    @Override
-    public void deleteAccount(User user, Account account) throws FinanceTrackerServiceException {
-
-    }
-
-    @Override
-    public ArrayList<Account> getAccounts(User user) throws FinanceTrackerServiceException {
-        ArrayList<Account> accounts = new ArrayList<>();
+    public void deleteExpense(int userId, int expenseId) throws FinanceTrackerServiceException {
         try {
-            accounts = accountDAO.getAllAccounts(user);
+            expenseDAO.deleteExpense(userId, expenseId);
         } catch (DAOException e) {
-            throw new FinanceTrackerServiceException("Failed to get accounts", e);
+            throw new FinanceTrackerServiceException("Failed to access expenses' data.", e);
+        }
+    }
+
+    @Override
+    public void addIncome(int userId, Income income) throws FinanceTrackerServiceException {
+
+        if (income == null) {
+            throw new FinanceTrackerServiceException("Null income.");
+        }
+
+        if (income.getSum().doubleValue() < 0) {
+            throw new FinanceTrackerServiceException("Invalid transaction sum.");
+        }
+
+        if (income.getDate().after(new Date())) {
+            throw new FinanceTrackerServiceException("Invalid transaction date.");
+        }
+
+        if (income.getNote() == null || income.getNote().equals("null")) {
+            throw new FinanceTrackerServiceException("Null note.");
+        }
+
+
+        try {
+            if (!accountDAO.hasAccount(userId, income.getAccountId())) {
+                throw new FinanceTrackerServiceException("User does not have such account.");
+            }
+        } catch (DAOException e) {
+            throw new FinanceTrackerServiceException("Failed to access accounts' data.", e);
+        }
+
+        try {
+            incomeDAO.addIncome(userId, income);
+        } catch (DAOException e) {
+            throw new FinanceTrackerServiceException("Failed to access incomes' data.", e);
+        }
+    }
+
+    @Override
+    public void editIncome(int userId, Income editedIncome) throws FinanceTrackerServiceException {
+        if (editedIncome == null) {
+            throw new FinanceTrackerServiceException("Null income.");
+        }
+
+        if (editedIncome.getSum().doubleValue() < 0) {
+            throw new FinanceTrackerServiceException("Invalid transaction sum.");
+        }
+
+        if (editedIncome.getDate().after(new Date())) {
+            throw new FinanceTrackerServiceException("Invalid transaction date.");
+        }
+
+        if (editedIncome.getNote() == null || editedIncome.getNote().equals("null")) {
+            throw new FinanceTrackerServiceException("Null note.");
+        }
+
+        try {
+            if (!accountDAO.hasAccount(userId, editedIncome.getAccountId())) {
+                throw new FinanceTrackerServiceException("User does not have such account.");
+            }
+        } catch (DAOException e) {
+            throw new FinanceTrackerServiceException("Failed to access accounts' data.", e);
+        }
+
+        Income income;
+        try {
+            income = incomeDAO.getIncome(userId, editedIncome.getId());
+        } catch (DAOException e) {
+            throw new FinanceTrackerServiceException("Failed to access incomes' data.", e);
+        }
+
+        BigDecimal sumChange = editedIncome.getSum().subtract(income.getSum());
+        try {
+            if (editedIncome.getAccountId() != income.getAccountId()) {
+                Account oldAccount = accountDAO.getAccount(userId, income.getAccountId());
+                Account newAccount = accountDAO.getAccount(userId, editedIncome.getAccountId());
+                oldAccount.setBalance(oldAccount.getBalance().add(income.getSum()));
+
+                newAccount.setBalance(newAccount.getBalance().subtract(editedIncome.getSum()));
+                accountDAO.editAccount(userId, oldAccount);
+                accountDAO.editAccount(userId, newAccount);
+            } else {
+                Account account = accountDAO.getAccount(userId, editedIncome.getAccountId());
+                account.setBalance(account.getBalance().subtract(sumChange));
+                accountDAO.editAccount(userId, account);
+            }
+        } catch (DAOException e) {
+            throw new FinanceTrackerServiceException("Failed to access accounts' data.", e);
+        }
+
+        income.setSum(editedIncome.getSum());
+        income.setCategory(editedIncome.getCategory());
+        income.setDate(editedIncome.getDate());
+        income.setNote(editedIncome.getNote());
+        income.setAccountId(editedIncome.getAccountId());
+
+        try {
+            incomeDAO.editIncome(userId, editedIncome);
+        } catch (DAOException e) {
+            throw new FinanceTrackerServiceException("Failed to access incomes' data.", e);
+        }
+    }
+
+    @Override
+    public void deleteIncome(int userId, int incomeId) throws FinanceTrackerServiceException {
+        try {
+            incomeDAO.deleteIncome(userId, incomeId);
+        } catch (DAOException e) {
+            throw new FinanceTrackerServiceException("Failed to access incomes' data.", e);
+        }
+    }
+
+    @Override
+    public void addAccount(int userId, Account account) throws FinanceTrackerServiceException {
+
+        if (account == null) {
+            throw new FinanceTrackerServiceException("Null account.");
+        }
+
+        if (account.getName().isEmpty() || account.getName() == null) {
+            throw new FinanceTrackerServiceException("Null account name.");
+        }
+
+        try {
+            accountDAO.addAccount(userId, account);
+        } catch (DAOException e) {
+            throw new FinanceTrackerServiceException("Failed to access accounts' data.", e);
+        }
+    }
+
+    @Override
+    public void editAccount(int userId, Account editedAccount) throws FinanceTrackerServiceException {
+        if (editedAccount == null) {
+            throw new FinanceTrackerServiceException("Null account.");
+        }
+
+        if (editedAccount.getName().isEmpty() || editedAccount.getName() == null) {
+            throw new FinanceTrackerServiceException("Null account name.");
+        }
+
+        try {
+            accountDAO.editAccount(userId, editedAccount);
+        } catch (DAOException e) {
+            throw new FinanceTrackerServiceException("Failed to access accounts' data.", e);
+        }
+    }
+
+    @Override
+    public void deleteAccount(int userId, int accountId) throws FinanceTrackerServiceException {
+        try {
+            accountDAO.deleteAccount(userId, accountId);
+        } catch (DAOException e) {
+            throw new FinanceTrackerServiceException("Failed to access accounts' data.", e);
+        }
+    }
+
+    @Override
+    public Account[] getAccounts(int userId) throws FinanceTrackerServiceException {
+        Account[] accounts;
+        try {
+            accounts = accountDAO.getAllAccounts(userId);
+        } catch (DAOException e) {
+            throw new FinanceTrackerServiceException("Failed to access accounts' data.", e);
         }
         return accounts;
     }
 
     @Override
-    public ArrayList<Transaction> getTransactionsHistory(User user) throws FinanceTrackerServiceException {
-        if (user == null) {
-            throw new NullUserException();
+    public Transaction[] getTransactionsHistory(int userId) throws FinanceTrackerServiceException {
+
+        ArrayList<Transaction> transactions = new ArrayList<>();
+
+        try {
+            transactions.addAll(Arrays.asList(expenseDAO.getAllExpenses(userId)));
+        } catch (DAOException e) {
+            throw new FinanceTrackerServiceException("Failed to access expenses' data.", e);
         }
 
-        if (user.getTransactions().size() != 0) {
-            this.user.getTransactions().sort(new TransactionByDateComparator());
+        try {
+            transactions.addAll(Arrays.asList(incomeDAO.getAllIncomes(userId)));
+        } catch (DAOException e) {
+            throw new FinanceTrackerServiceException("Failed to access incomes' data.", e);
         }
-        //TODO maybe it should return copies
-        //TODO
-        //TODO
-        return user.getTransactions();
+
+        transactions.sort(new TransactionByDateComparator());
+        Transaction[] transactionsArray = new Transaction[transactions.size()];
+        return transactions.toArray(transactionsArray);
     }
 
     @Override
-    public ArrayList<Transaction> getTransactionsHistory(User user, Date date) throws FinanceTrackerServiceException {
-        if (user == null) {
-            throw new NullUserException();
+    public Transaction[] getTransactionsHistory(int userId, Date date) throws FinanceTrackerServiceException {
+
+        ArrayList<Transaction> transactions = new ArrayList<>();
+
+        try {
+            transactions.addAll(Arrays.asList(expenseDAO.getAllExpenses(userId)));
+        } catch (DAOException e) {
+            throw new FinanceTrackerServiceException("Failed to access expenses' data.", e);
+        }
+
+        try {
+            transactions.addAll(Arrays.asList(incomeDAO.getAllIncomes(userId)));
+        } catch (DAOException e) {
+            throw new FinanceTrackerServiceException("Failed to access incomes' data.", e);
         }
 
         ArrayList<Transaction> transactionsFromSpecificDate = new ArrayList<>();
-        //TODO think of the date representation and how to check them
-        /**
-         for(Transaction transaction:user.getTransactions()){
-         if(transaction.getDate().){
-         transactionsFromSpecificDate.add(transaction);
-         }
-         } */
-        //TODO maybe it should return copies
-        return transactionsFromSpecificDate;
+        Calendar cal1, cal2;
+        for (Transaction transaction : transactions) {
+            cal1 = Calendar.getInstance();
+            cal2 = Calendar.getInstance();
+            cal1.setTime(transaction.getDate());
+            cal2.setTime(date);
+            boolean sameDay = cal1.get(Calendar.DAY_OF_YEAR) == cal2.get(Calendar.DAY_OF_YEAR) &&
+                    cal1.get(Calendar.YEAR) == cal2.get(Calendar.YEAR);
+
+            if (sameDay) {
+                transactionsFromSpecificDate.add(transaction);
+            }
+        }
+        transactionsFromSpecificDate.sort(new TransactionByDateComparator());
+        Transaction[] transactionsArray = new Transaction[transactionsFromSpecificDate.size()];
+        return transactionsFromSpecificDate.toArray(transactionsArray);
     }
 
     @Override
-    public void transferMoney(User user, Account accountSender, Account accountReceiver, BigDecimal sum) throws FinanceTrackerServiceException {
-        if (user == null) {
-            throw new NullUserException();
+    public void transferMoney(int userId, Account accountSender, Account accountReceiver, BigDecimal sum) throws FinanceTrackerServiceException {
+
+        try {
+            if (!accountDAO.hasAccount(userId, accountSender.getId())) {
+                throw new FinanceTrackerServiceException("User does not have such account " + accountSender.getName());
+            }
+        } catch (DAOException e) {
+            throw new FinanceTrackerServiceException("Failed to access accounts' data.", e);
         }
 
-        if (!user.hasAccount(accountSender.getId())) {
-            //TODO create message
-            throw new UserDoesNotHaveSuchAccountException();
-        }
-
-        if (!user.hasAccount(accountReceiver.getId())) {
-            //TODO create message
-            throw new UserDoesNotHaveSuchAccountException();
+        try {
+            if (!accountDAO.hasAccount(userId, accountReceiver.getId())) {
+                throw new FinanceTrackerServiceException("User does not have such account " + accountReceiver.getName());
+            }
+        } catch (DAOException e) {
+            throw new FinanceTrackerServiceException("Failed to access accounts' data.", e);
         }
 
         if (accountSender.getId() == accountReceiver.getId()) {
-            //TODO create message
-            throw new TransferMoneyToTheSameAccountAttemptException();
+            throw new FinanceTrackerServiceException("Attempt to transfer money to the same account");
         }
 
         if (sum.doubleValue() < 0) {
-            //TODO create message
-            throw new InvalidTransactionSumException();
+            throw new FinanceTrackerServiceException("Invalid transaction sum");
         }
 
         accountSender.setBalance(accountSender.getBalance().subtract(sum));
         accountReceiver.setBalance(accountReceiver.getBalance().add(sum));
 
         try {
-            accountDAO.editAccount(this.user, accountSender);
-            accountDAO.editAccount(this.user, accountReceiver);
+            accountDAO.editAccount(userId, accountSender);
+            accountDAO.editAccount(userId, accountReceiver);
         } catch (DAOException e) {
-            //TODO create message
-            throw new FinanceTrackerServiceException(e);
+            throw new FinanceTrackerServiceException("Failed to access accounts' data.", e);
         }
     }
 
     @Override
-    public BigDecimal getCurrentBalance(User user) throws FinanceTrackerServiceException {
-        if (user == null) {
-            throw new NullUserException();
+    public BigDecimal getCurrentBalance(int userId) throws FinanceTrackerServiceException {
+        Account[] accounts;
+        try {
+            accounts = accountDAO.getAllAccounts(userId);
+        } catch (DAOException e) {
+            throw new FinanceTrackerServiceException("Failed to access accounts' data.", e);
         }
 
         BigDecimal currentBalance = new BigDecimal(0.0);
-        for (Account account : user.getAccounts()) {
+        for (Account account : accounts) {
             currentBalance = currentBalance.add(account.getBalance());
         }
         return currentBalance;
+    }
+
+    @Override
+    public Map<ExpenseCategory, BigDecimal> getExpensesByCategory(int userId) throws FinanceTrackerServiceException {
+        Map<ExpenseCategory, BigDecimal> expensesByCategory = new HashMap<>();
+        try {
+            Expense[] expenses = expenseDAO.getAllExpenses(userId);
+            for (Expense expense : expenses) {
+                if (expensesByCategory.containsKey((ExpenseCategory) expense.getCategory())) {
+                    expensesByCategory.put((ExpenseCategory) expense.getCategory(),
+                            expensesByCategory.get(expense.getCategory()).add(expense.getSum()));
+                } else {
+                    expensesByCategory.put((ExpenseCategory) expense.getCategory(), expense.getSum());
+                }
+            }
+        } catch (DAOException e) {
+            throw new FinanceTrackerServiceException("Failed to access expenses' data.", e);
+        }
+        return expensesByCategory;
+    }
+
+    @Override
+    public Map<IncomeCategory, BigDecimal> getIncomesByCategory(int userId) throws FinanceTrackerServiceException {
+        Map<IncomeCategory, BigDecimal> incomesByCategory = new HashMap<>();
+        try {
+            Income[] incomes = incomeDAO.getAllIncomes(userId);
+            for (Income income : incomes) {
+                if (incomesByCategory.containsKey((IncomeCategory) income.getCategory())) {
+                    incomesByCategory.put((IncomeCategory) income.getCategory(),
+                            incomesByCategory.get(income.getCategory()).add(income.getSum()));
+                } else {
+                    incomesByCategory.put((IncomeCategory) income.getCategory(), income.getSum());
+                }
+            }
+        } catch (DAOException e) {
+            throw new FinanceTrackerServiceException("Failed to access incomes' data.", e);
+        }
+        return incomesByCategory;
     }
 
     private class TransactionByDateComparator implements Comparator<Transaction> {
 
         @Override
         public int compare(Transaction transaction1, Transaction transaction2) {
-            return transaction1.getDate().compareTo(transaction2.getDate());
+            return transaction2.getDate().compareTo(transaction1.getDate());
         }
     }
 }

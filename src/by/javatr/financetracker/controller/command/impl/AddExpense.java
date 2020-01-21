@@ -2,8 +2,8 @@ package by.javatr.financetracker.controller.command.impl;
 
 import by.javatr.financetracker.bean.Expense;
 import by.javatr.financetracker.bean.ExpenseCategory;
-import by.javatr.financetracker.bean.User;
 import by.javatr.financetracker.controller.command.Command;
+import by.javatr.financetracker.controller.stringvalues.StringProperty;
 import by.javatr.financetracker.service.FinanceTrackerService;
 import by.javatr.financetracker.service.exception.FinanceTrackerServiceException;
 import by.javatr.financetracker.service.factory.ServiceFactory;
@@ -21,37 +21,35 @@ public class AddExpense implements Command {
         String response;
         String[] requestData = request.split(delimiter);
 
-        String logIn = requestData[0];
-        int id = Integer.parseInt(requestData[1]);
+        int userId = Integer.parseInt(requestData[0]);
 
-        BigDecimal sum = new BigDecimal(Double.parseDouble(requestData[2]));
-        ExpenseCategory category = ExpenseCategory.valueOf(requestData[3].toUpperCase());
-        int accountId = Integer.parseInt(requestData[4]);
+        BigDecimal sum = new BigDecimal(Double.parseDouble(requestData[1]));
+        ExpenseCategory category = ExpenseCategory.valueOf(requestData[2].toUpperCase());
+        int accountId = Integer.parseInt(requestData[3]);
         String note;
-        if(requestData.length<7) {
+        if (requestData.length < 6) {
             note = "";
-        } else{
-            note = requestData[6];
+        } else {
+            note = requestData[5];
         }
         Date date;
         try {
-            date = new SimpleDateFormat("EEE_MMM_dd_HH:mm:ss_zzz_yyyy", Locale.ENGLISH).parse(requestData[5]);
+            date = new SimpleDateFormat(StringProperty.getStringValue("dateFormat"), Locale.ENGLISH).parse(requestData[4]);
         } catch (ParseException e) {
-            response = "Failed to add expense because of invalid date representation";
+            response = StringProperty.getStringValue("failedBecauseOfDate");
             return response;
         }
 
-        User user = new User(logIn, id);
         Expense expense = new Expense(sum, category, accountId, date, note);
 
         ServiceFactory serviceFactory = ServiceFactory.getInstance();
         FinanceTrackerService financeTracker = serviceFactory.getFinanceTrackerService();
 
         try {
-            financeTracker.addExpense(user, expense);
-            response = "new expense was added";
+            financeTracker.addExpense(userId, expense);
+            response = StringProperty.getStringValue("expenseAdded");
         } catch (FinanceTrackerServiceException e) {
-            response = "Failed to add expense because of " + e.getMessage();
+            response = StringProperty.getStringValue("failedToAddExpense") + e.getMessage();
         }
         return response;
     }

@@ -1,6 +1,6 @@
 package by.javatr.financetracker.service.exception;
 
-public class ClientServiceException extends Exception{
+public class ClientServiceException extends Exception {
     public ClientServiceException() {
     }
 

@@ -2,11 +2,9 @@ package by.javatr.financetracker.dao.impl;
 
 import by.javatr.financetracker.bean.Expense;
 import by.javatr.financetracker.bean.ExpenseCategory;
-import by.javatr.financetracker.bean.User;
 import by.javatr.financetracker.dao.ExpenseDAO;
 import by.javatr.financetracker.dao.exception.DAOException;
-import by.javatr.financetracker.dao.exception.ExpenseNotFoundException;
-import by.javatr.financetracker.dao.exception.UserNotFoundException;
+import by.javatr.financetracker.dao.stringvalues.StringProperty;
 
 import java.io.*;
 import java.math.BigDecimal;
@@ -20,6 +18,7 @@ public class FileExpenseDAO implements ExpenseDAO {
 
     private File transactionsFile;
     private String dataSeparator;
+    private File transferFile = new File(StringProperty.getStringValue("transferFilePath"));
 
     public FileExpenseDAO(File transactionsFile, String dataSeparator) {
         this.transactionsFile = transactionsFile;
@@ -32,15 +31,14 @@ public class FileExpenseDAO implements ExpenseDAO {
     }
 
     @Override
-    public void addExpense(User user, Expense expense) throws DAOException {
+    public void addExpense(int userId, Expense expense) throws DAOException {
         try {
             RandomAccessFile randomAccessFile = new RandomAccessFile(transactionsFile, "rw");
-            RandomAccessFile transfer = new RandomAccessFile("transfer.txt", "rw");
+            RandomAccessFile transfer = new RandomAccessFile(transferFile, "rw");
 
             FileChannel sourceChannel = randomAccessFile.getChannel();
             FileChannel transferChannel = transfer.getChannel();
             String currentTransaction, currentTransactionUserId;
-            int userId = user.getId();
 
             while ((currentTransaction = randomAccessFile.readLine()) != null) {
                 currentTransactionUserId = currentTransaction.split(dataSeparator)[0];
@@ -49,7 +47,7 @@ public class FileExpenseDAO implements ExpenseDAO {
                 }
 
                 long position = randomAccessFile.getFilePointer();
-                sourceChannel.position(position); // sets the pointer at @position to start transferring info from it
+                sourceChannel.position(position);
                 transferChannel.transferFrom(sourceChannel, 0, sourceChannel.size() - position);
                 randomAccessFile.setLength(position);
                 randomAccessFile.writeBytes(userId + dataSeparator + expense.getId() + dataSeparator + "-" + expense.getSum()
@@ -66,118 +64,131 @@ public class FileExpenseDAO implements ExpenseDAO {
             }
             transfer.setLength(0);
         } catch (IOException e) {
-            //TODO create message
             throw new DAOException(e);
         }
     }
 
     @Override
-    public void editExpense(User user, Expense expense) throws DAOException {
+    public void editExpense(int userId, Expense editedExpense) throws DAOException {
 
         try {
             RandomAccessFile randomAccessFile = new RandomAccessFile(transactionsFile, "rw");
-            RandomAccessFile transfer = new RandomAccessFile("transfer.txt", "rw");
+            RandomAccessFile transfer = new RandomAccessFile(transferFile, "rw");
 
             FileChannel sourceChannel = randomAccessFile.getChannel();
             FileChannel transferChannel = transfer.getChannel();
             String currentTransaction, currentTransactionUserId, currentTransactionId;
-            int userId = user.getId();
 
             while ((currentTransaction = randomAccessFile.readLine()) != null) {
                 currentTransactionUserId = currentTransaction.split(dataSeparator)[0];
                 currentTransactionId = currentTransaction.split(dataSeparator)[1];
-                if (!(currentTransactionUserId.equals(String.valueOf(userId)) && currentTransactionId.equals(String.valueOf(expense.getId())))) {
+                if (!(currentTransactionUserId.equals(String.valueOf(userId)) && currentTransactionId.equals(String.valueOf(editedExpense.getId())))) {
                     continue;
                 }
                 break;
             }
             if (currentTransaction == null) {
-                //TODO create message
-                throw new ExpenseNotFoundException();
+                throw new DAOException("Expense not found");
             }
             long position = randomAccessFile.getFilePointer();
-            sourceChannel.position(position); // sets the pointer at @position to start transferring info from it
+            sourceChannel.position(position);
             transferChannel.transferFrom(sourceChannel, 0, sourceChannel.size() - position);
-            randomAccessFile.setLength(position - currentTransaction.length() - 2);
-            randomAccessFile.seek(position - currentTransaction.length() - 2);
-            randomAccessFile.writeBytes(userId + dataSeparator + expense.getId() + dataSeparator + "-" + expense.getSum()
-                    + dataSeparator + expense.getCategory() + dataSeparator + expense.getNote() + dataSeparator
-                    + expense.getDate() + dataSeparator + expense.getAccountId() + "\n");
+            randomAccessFile.setLength(position - currentTransaction.length() - 1);
+            randomAccessFile.seek(position - currentTransaction.length() - 1);
+            randomAccessFile.writeBytes(userId + dataSeparator + editedExpense.getId() + dataSeparator + "-" + editedExpense.getSum()
+                    + dataSeparator + editedExpense.getCategory() + dataSeparator + editedExpense.getNote() + dataSeparator
+                    + editedExpense.getDate() + dataSeparator + editedExpense.getAccountId() + "\n");
             sourceChannel.transferFrom(transferChannel, randomAccessFile.getFilePointer(), transferChannel.size());
 
             transfer.setLength(0);
         } catch (IOException e) {
-            //TODO create message
             throw new DAOException(e);
         }
     }
 
     @Override
-    public void deleteExpense(User user, Expense expense) throws DAOException {
+    public void deleteExpense(int userId, int expenseId) throws DAOException {
         try {
             RandomAccessFile randomAccessFile = new RandomAccessFile(transactionsFile, "rw");
-            RandomAccessFile transfer = new RandomAccessFile("transfer.txt", "rw");
+            RandomAccessFile transfer = new RandomAccessFile(transferFile, "rw");
 
             FileChannel sourceChannel = randomAccessFile.getChannel();
             FileChannel transferChannel = transfer.getChannel();
             String currentTransaction, currentTransactionUserId, currentTransactionId;
-            int userId = user.getId();
 
             while ((currentTransaction = randomAccessFile.readLine()) != null) {
                 currentTransactionUserId = currentTransaction.split(dataSeparator)[0];
                 currentTransactionId = currentTransaction.split(dataSeparator)[1];
-                if (!(currentTransactionUserId.equals(String.valueOf(userId)) && currentTransactionId.equals(String.valueOf(expense.getId())))) {
-                    continue;
+                if ((currentTransactionUserId.equals(String.valueOf(userId)) && currentTransactionId.equals(String.valueOf(expenseId)))) {
+                    long position = randomAccessFile.getFilePointer();
+                    sourceChannel.position(position);
+                    transferChannel.transferFrom(sourceChannel, 0, sourceChannel.size() - position);
+                    randomAccessFile.setLength(position - currentTransaction.length() - 1);
+                    randomAccessFile.seek(position - currentTransaction.length() - 1);
+                    sourceChannel.transferFrom(transferChannel, randomAccessFile.getFilePointer(), transferChannel.size());
+                    break;
                 }
-                break;
             }
-            if (currentTransaction == null) {
-                //TODO create message
-                throw new ExpenseNotFoundException();
-            }
-            long position = randomAccessFile.getFilePointer();
-            sourceChannel.position(position); // sets the pointer at @position to start transferring info from it
-            transferChannel.transferFrom(sourceChannel, 0, sourceChannel.size() - position);
-            randomAccessFile.setLength(position - currentTransaction.length() - 2);
-            randomAccessFile.seek(position - currentTransaction.length() - 2);
-            sourceChannel.transferFrom(transferChannel, randomAccessFile.getFilePointer(), transferChannel.size());
 
             transfer.setLength(0);
         } catch (IOException e) {
-            //TODO create message
-            throw new DAOException(e);
+            throw new DAOException(e.getMessage(), e);
         }
     }
 
     @Override
-    public ArrayList<Expense> getAllExpenses(User user) throws DAOException {
+    public Expense getExpense(int userId, int expenseId) throws DAOException {
         try {
             boolean isFound = false;
+            BufferedReader bufferedReader = new BufferedReader(new FileReader(transactionsFile));
+            String currentTransaction, currentTransactionUserId, currentTransactionId;
+            String[] transactionInfo;
+            Expense expense = new Expense();
+            while ((currentTransaction = bufferedReader.readLine()) != null) {
+                transactionInfo = currentTransaction.split(dataSeparator);
+                currentTransactionUserId = transactionInfo[0];
+                currentTransactionId = transactionInfo[1];
+                if (currentTransactionUserId.equals(String.valueOf(userId)) && currentTransactionId.equals(String.valueOf(expenseId))) {
+                    expense = new Expense(new BigDecimal(Math.abs(Double.parseDouble(transactionInfo[2]))),
+                            ExpenseCategory.valueOf(transactionInfo[3]), Integer.parseInt(transactionInfo[6]),
+                            new SimpleDateFormat(StringProperty.getStringValue("dateFormat"), Locale.ENGLISH).parse(transactionInfo[5]), transactionInfo[4],
+                            Integer.parseInt(transactionInfo[1]));
+                    isFound = true;
+                    break;
+                }
+            }
+
+            if (!isFound) {
+                throw new DAOException("User not found");
+            }
+            return expense;
+        } catch (IOException | ParseException e) {
+            throw new DAOException(e);
+        }
+    }
+
+    @Override
+    public Expense[] getAllExpenses(int userId) throws DAOException {
+        try {
             ArrayList<Expense> expenses = new ArrayList<>();
             BufferedReader bufferedReader = new BufferedReader(new FileReader(transactionsFile));
             String currentTransaction, currentTransactionUserId;
             String[] transactionInfo;
-            int id = user.getId();
             while ((currentTransaction = bufferedReader.readLine()) != null) {
                 transactionInfo = currentTransaction.split(dataSeparator);
                 currentTransactionUserId = transactionInfo[0];
-                if (!(currentTransactionUserId.equals(String.valueOf(id)) && Double.parseDouble(transactionInfo[2]) < 0)) {
+                if (!(currentTransactionUserId.equals(String.valueOf(userId)) && Double.parseDouble(transactionInfo[2]) < 0)) {
                     continue;
                 }
-                isFound = true;
                 expenses.add(new Expense(new BigDecimal(Math.abs(Double.parseDouble(transactionInfo[2]))),
                         ExpenseCategory.valueOf(transactionInfo[3]), Integer.parseInt(transactionInfo[6]),
-                        new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy", Locale.ENGLISH).parse(transactionInfo[5]), transactionInfo[4],
+                        new SimpleDateFormat(StringProperty.getStringValue("dateFormat"), Locale.ENGLISH).parse(transactionInfo[5]), transactionInfo[4],
                         Integer.parseInt(transactionInfo[1])));
             }
 
-            if (!isFound) {
-                //TODO create message
-                throw new UserNotFoundException();
-            }
-            return expenses;
+            Expense[] expensesArray = new Expense[expenses.size()];
+            return expenses.toArray(expensesArray);
         } catch (IOException | ParseException e) {
-            //TODO create message
             throw new DAOException(e);
         }
     }

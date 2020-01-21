@@ -2,6 +2,7 @@ package by.javatr.financetracker.controller.command.impl;
 
 import by.javatr.financetracker.bean.User;
 import by.javatr.financetracker.controller.command.Command;
+import by.javatr.financetracker.controller.stringvalues.StringProperty;
 import by.javatr.financetracker.service.ClientService;
 import by.javatr.financetracker.service.exception.ClientServiceException;
 import by.javatr.financetracker.service.factory.ServiceFactory;
@@ -21,9 +22,9 @@ public class SignUp implements Command {
 
         try {
             User user = clientService.signUp(logIn, password);
-            response = user.getLogIn() + delimiter + user.getId();
+            response = user.getId() + delimiter + user.getLogIn();
         } catch (ClientServiceException e) {
-            response = "Failed to sign up";
+            response = StringProperty.getStringValue("signUpFailed") + e.getMessage();
         }
         return response;
     }

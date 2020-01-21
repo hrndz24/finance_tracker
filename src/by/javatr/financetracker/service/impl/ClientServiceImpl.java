@@ -1,6 +1,8 @@
 package by.javatr.financetracker.service.impl;
 
 import by.javatr.financetracker.bean.Account;
+import by.javatr.financetracker.bean.Expense;
+import by.javatr.financetracker.bean.Income;
 import by.javatr.financetracker.bean.User;
 import by.javatr.financetracker.dao.AccountDAO;
 import by.javatr.financetracker.dao.ExpenseDAO;
@@ -9,7 +11,9 @@ import by.javatr.financetracker.dao.UserDAO;
 import by.javatr.financetracker.dao.exception.DAOException;
 import by.javatr.financetracker.dao.factory.DAOFactory;
 import by.javatr.financetracker.service.ClientService;
-import by.javatr.financetracker.service.exception.*;
+import by.javatr.financetracker.service.exception.ClientServiceException;
+import by.javatr.financetracker.service.stringvalues.StringProperty;
+import by.javatr.financetracker.service.validation.Validator;
 
 import java.math.BigDecimal;
 
@@ -24,34 +28,30 @@ public class ClientServiceImpl implements ClientService {
     @Override
     public User signUp(String logIn, char[] password) throws ClientServiceException {
         if (logIn == null || logIn.isEmpty()) {
-            //TODO create message
-            throw new NullLogInException();
+            throw new ClientServiceException("Null logIn.");
         }
 
-        if (isWeakPassword(password)) {
-            //TODO create message
-            throw new WeakPasswordException();
+        if (password == null) {
+            throw new ClientServiceException("Null password.");
         }
 
-        if (!isValidPassword(password)) {
-            //TODO create message
-            throw new InvalidPasswordException();
+        if (Validator.isWeakPassword(password)) {
+            throw new ClientServiceException("Weak password.");
         }
 
-        if (!isValidLogIn(logIn)) {
-            //TODO create message
-            throw new LogInInvalidCharactersExceptions();
+        if (!Validator.isValidPassword(password)) {
+            throw new ClientServiceException("Invalid password characters.");
         }
 
-        //TODO в property file создать строку с символами, которые нельзя использовать
+        if (!Validator.isValidLogIn(logIn)) {
+            throw new ClientServiceException("Invalid logIn characters.");
+        }
 
         try {
             if (userDAO.hasUser(logIn)) {
-                //TODO create message
-                throw new LogInTakenException();
+                throw new ClientServiceException("LogIn is already taken.");
             }
         } catch (DAOException e) {
-            //TODO create message
             throw new ClientServiceException(e);
         }
 
@@ -59,119 +59,122 @@ public class ClientServiceImpl implements ClientService {
         try {
             userDAO.addUser(user, password);
         } catch (DAOException e) {
-            //TODO create message
             throw new ClientServiceException(e);
         }
 
-        Account account = new Account("Cash", new BigDecimal(0.0));
+        Account account = new Account(StringProperty.getStringValue("firstDefaultAccountName"), new BigDecimal(0.0));
         try {
-            accountDAO.addAccount(user, account);
+            accountDAO.addAccount(user.getId(), account);
         } catch (DAOException e) {
-            //TODO create message
-            throw new ClientServiceException(e);
+            throw new ClientServiceException("Failed to access users' data.", e);
         }
         return user;
     }
 
     @Override
     public User logIn(String logIn, char[] password) throws ClientServiceException {
+        if (logIn == null || logIn.isEmpty()) {
+            throw new ClientServiceException("Null logIn.");
+        }
+        if (password == null) {
+            throw new ClientServiceException("Null password.");
+        }
         try {
             if (userDAO.hasUser(logIn, password)) {
                 return userDAO.getUser(logIn);
             } else {
-                //TODO create message
-                throw new LogInFailedException("Failed to log in");
+                throw new ClientServiceException("User with such logIn and password not found.");
             }
         } catch (DAOException e) {
-            //TODO create message
-            throw new ClientServiceException(e);
+            throw new ClientServiceException("Failed to access users' data.", e);
         }
     }
 
     @Override
     public void deactivateAccount(User user, char[] password) throws ClientServiceException {
+        if (user == null) {
+            throw new ClientServiceException("Null user.");
+        }
+        if (password == null) {
+            throw new ClientServiceException("Null password.");
+        }
+
         try {
-            if (userDAO.hasUser(user.getLogIn())) {
-                userDAO.deleteUser(user);
+            if (userDAO.hasUser(user.getLogIn(), password)) {
+                userDAO.deleteUser(user.getId());
             } else {
-                //TODO create message
-                throw new FailedDeactivateAccount();
+                throw new ClientServiceException("User with such logIn and password not found.");
             }
+
+            Account[] accounts = accountDAO.getAllAccounts(user.getId());
+            for (Account account : accounts) {
+                accountDAO.deleteAccount(user.getId(), account.getId());
+            }
+
+            Expense[] expenses = expenseDAO.getAllExpenses(user.getId());
+            for (Expense expense : expenses) {
+                expenseDAO.deleteExpense(user.getId(), expense.getId());
+            }
+
+            Income[] incomes = incomeDAO.getAllIncomes(user.getId());
+            for (Income income : incomes) {
+                incomeDAO.deleteIncome(user.getId(), income.getId());
+            }
+
         } catch (DAOException e) {
-            //TODO create message
-            throw new ClientServiceException(e);
+            throw new ClientServiceException("Failed to access users' data.", e);
         }
     }
 
     @Override
     public void editLogIn(User user, String newLogIn) throws ClientServiceException {
-        if(!isValidLogIn(newLogIn)){
-            //TODO create message
-            throw new LogInInvalidCharactersExceptions();
+        if (user == null) {
+            throw new ClientServiceException("Null user.");
+        }
+        if (newLogIn == null || newLogIn.isEmpty()) {
+            throw new ClientServiceException("Null new logIn.");
+        }
+        if (!Validator.isValidLogIn(newLogIn)) {
+            throw new ClientServiceException("LogIn contains invalid characters");
         }
 
         try {
-            if(userDAO.hasUser(user.getLogIn())){
-                userDAO.editLogIn(user, newLogIn);
-            } else{
-                //TODO create message
-                throw new FailedEditLogInException();
+            if (!userDAO.hasUser(user.getLogIn())) {
+                throw new ClientServiceException("No user with such logIn found");
             }
+            if (userDAO.hasUser(newLogIn)) {
+                throw new ClientServiceException("LogIn taken");
+            }
+            userDAO.editLogIn(user.getId(), newLogIn);
         } catch (DAOException e) {
-            //TODO create message
-            throw new ClientServiceException(e);
+            throw new ClientServiceException("Failed to access users' data.", e);
         }
     }
 
     @Override
     public void changePassword(User user, char[] oldPassword, char[] newPassword) throws ClientServiceException {
-        if (isWeakPassword(newPassword)) {
-            //TODO create message
-            throw new WeakPasswordException();
+        if (user == null) {
+            throw new ClientServiceException("Null user.");
         }
-        if (!isValidPassword(newPassword)) {
-            //TODO create message
-            throw new InvalidPasswordException();
+        if (oldPassword == null || newPassword == null) {
+            throw new ClientServiceException("Null password.");
+        }
+        if (Validator.isWeakPassword(newPassword)) {
+            throw new ClientServiceException("Weak password.");
+        }
+        if (!Validator.isValidPassword(newPassword)) {
+            throw new ClientServiceException("Password contains invalid characters.");
         }
 
         try {
             if (userDAO.hasUser(user.getLogIn(), oldPassword)) {
-                userDAO.editPassword(user, newPassword);
+                userDAO.editPassword(user.getId(), newPassword);
             } else {
-                //TODO create message
-                throw new FailedChangePassword();
+                throw new ClientServiceException("User with such logIn and password not found");
             }
         } catch (DAOException e) {
-            //TODO create message
-            throw new ClientServiceException(e);
+            throw new ClientServiceException("Failed to access users' data.", e);
         }
-    }
-
-    private boolean isValidLogIn(String logIn){
-        //TODO replace literals
-        return  !(logIn.contains(", ") || logIn.contains(" "));
-    }
-
-    private boolean isValidPassword(char[] password) {
-        //TODO replace literals
-        for (char c : password) {
-            if (c == ' ' || c == ',') {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    private boolean isWeakPassword(char[] password) {
-        if (password.length < 8) {
-            return true;
-        }
-        for (char character : password) {
-            if (character >= 65 && character <= 90) {
-                return false;
-            }
-        }
-        return true;
     }
 
 }

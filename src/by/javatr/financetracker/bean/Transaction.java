@@ -1,15 +1,38 @@
 package by.javatr.financetracker.bean;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Date;
 
 public abstract class Transaction {
-    protected BigDecimal sum;
-    protected String note = "";
-    protected int accountId;
-    protected Date date;
-    protected final int id;
-    protected Enum category;
+    private BigDecimal sum;
+    private String note = "";
+    private int accountId;
+    private Date date;
+    private final int id;
+    private Enum category;
+
+    public Transaction(BigDecimal sum, Enum category, int accountId, Date date, String note, int id) {
+        this.sum = sum.setScale(2, RoundingMode.HALF_UP);
+        this.note = note;
+        this.accountId = accountId;
+        this.date = date;
+        this.id = id;
+        this.category = category;
+    }
+
+    public Transaction(BigDecimal sum, Enum category, int accountId, Date date, String note) {
+        this.sum = sum.setScale(2, RoundingMode.HALF_UP);
+        this.note = note;
+        this.accountId = accountId;
+        this.date = date;
+        this.id = date.hashCode();
+        this.category = category;
+    }
+
+    Transaction() {
+        this.id = new Date().hashCode();
+    }
 
     public Enum getCategory() {
         return category;
@@ -35,17 +58,20 @@ public abstract class Transaction {
         return date;
     }
 
-    //TODO setters and getter should be here
-    protected Transaction(){
-        this.id = new Date().hashCode();
+    public void setSum(BigDecimal sum) {
+        this.sum = sum;
     }
 
-    protected Transaction(Date date){
-        this.id = date.hashCode();
+    public void setNote(String note) {
+        this.note = note;
     }
 
-    protected Transaction(int id){
-        this.id = id;
+    public void setAccountId(int accountId) {
+        this.accountId = accountId;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
     }
 
     public int getId() {
