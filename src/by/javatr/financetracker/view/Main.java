@@ -35,7 +35,7 @@ public class Main {
         String addIncomeResponse = controller.executeTask("add_income " + userId +
                 " 123.55 " + IncomeCategory.SAVINGS + delimiter + accounts[2].getId() + delimiter +
                 new Date().toString().replace(" ", "_")
-                + " what_can_be_better_than_find_money_in_old_jacket");
+                + " what_can_be_better_than_finding_money_in_old_jacket");
         System.out.println(addIncomeResponse);
         
 
