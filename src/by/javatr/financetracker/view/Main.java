@@ -21,25 +21,25 @@ public class Main {
 
         String getAccountsResponse = controller.executeTask("get_accounts" + delimiter + userId);
         Account[] accounts = parseAccounts(getAccountsResponse);
-        /*
+        
         // userId sum category accountId date_like_that note_too
         String addExpenseResponse = controller.executeTask("add_expense" + delimiter + userId +
                 delimiter + 45.56 + delimiter + ExpenseCategory.ENTERTAINMENT + delimiter + accounts[3].getId() + delimiter
                 + new Date().toString().replace(" ", "_"));
 
         System.out.println(addExpenseResponse);
-        */
+        
 
-        /*
+        
         // userId sum category accountId date_like_that note_too
         String addIncomeResponse = controller.executeTask("add_income " + userId +
                 " 123.55 " + IncomeCategory.SAVINGS + delimiter + accounts[2].getId() + delimiter +
                 new Date().toString().replace(" ", "_")
                 + " what_can_be_better_than_find_money_in_old_jacket");
         System.out.println(addIncomeResponse);
-        */
+        
 
-        /*
+        
         //changes accountId to be account's name
         String getTransactionsHistoryResponse = controller.executeTask("get_transactions_history "+userId);
         for (Account account : accounts) {
@@ -49,16 +49,16 @@ public class Main {
         System.out.println(getTransactionsHistoryResponse);
         */
 
-        /*
+        
         String changePasswordResponse = controller.executeTask(
                 "change_password "+userId+" nat@nat.com VeryStrongPassword AnotherStrongPassword");
         System.out.println(changePasswordResponse);
-        */
+        
 
-        /*
+        
         String getExpensesByCategoryResponse = controller.executeTask("get_expenses_by_category "+userId);
         System.out.println(getExpensesByCategoryResponse);
-        */
+        
 
 
     }
