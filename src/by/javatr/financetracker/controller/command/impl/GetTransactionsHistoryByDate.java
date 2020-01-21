@@ -1,5 +1,7 @@
 package by.javatr.financetracker.controller.command.impl;
 
+import by.javatr.financetracker.bean.Expense;
+import by.javatr.financetracker.bean.Income;
 import by.javatr.financetracker.bean.Transaction;
 import by.javatr.financetracker.controller.command.Command;
 import by.javatr.financetracker.controller.stringvalues.StringProperty;
@@ -35,8 +37,17 @@ public class GetTransactionsHistoryByDate implements Command {
             Transaction[] transactions = financeTracker.getTransactionsHistory(userId, date);
             StringBuilder stringBuilder = new StringBuilder();
             for (Transaction transaction : transactions) {
-                String transactionString = transaction.toString();
-                stringBuilder.append(transactionString.substring(transactionString.indexOf("@") + 1)).append("\n");
+                String sumSign = " ";
+                if (transaction.getClass() == Expense.class) {
+                    sumSign = "-";
+                } else if (transaction.getClass() == Income.class) {
+                    sumSign = "+";
+                }
+                String transactionString = sumSign + transaction.getSum().doubleValue() + delimiter
+                        + transaction.getCategory() + delimiter + transaction.getAccountId()
+                        + delimiter + transaction.getDate().toString().replace(delimiter, "_")
+                        + delimiter + transaction.getNote() +delimiter+transaction.getId();
+                stringBuilder.append(transactionString).append("\n");
             }
             response = stringBuilder.toString();
         } catch (FinanceTrackerServiceException e) {

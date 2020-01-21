@@ -33,7 +33,7 @@ public class GetTransactionsHistory implements Command {
                 }
                 String transactionString = sumSign + transaction.getSum().doubleValue() + delimiter
                         + transaction.getCategory() + delimiter + transaction.getAccountId()
-                        + delimiter + transaction.getDate().toString().replace(" ", "_")
+                        + delimiter + transaction.getDate().toString().replace(delimiter, "_")
                         + delimiter + transaction.getNote() +delimiter+transaction.getId();
                 stringBuilder.append(transactionString).append("\n");
             }
