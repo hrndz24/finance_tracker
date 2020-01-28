@@ -28,9 +28,8 @@ public class FileAccountDAO implements AccountDAO {
 
     @Override
     public void addAccount(int userId, Account account) throws DAOException {
-        try {
-            RandomAccessFile randomAccessFile = new RandomAccessFile(accountsFile, "rw");
-            RandomAccessFile transfer = new RandomAccessFile(transferFile, "rw");
+        try(RandomAccessFile randomAccessFile = new RandomAccessFile(accountsFile, "rw");
+            RandomAccessFile transfer = new RandomAccessFile(transferFile, "rw");) {
 
             FileChannel sourceChannel = randomAccessFile.getChannel();
             FileChannel transferChannel = transfer.getChannel();
@@ -64,9 +63,8 @@ public class FileAccountDAO implements AccountDAO {
 
     @Override
     public void editAccount(int userId, Account editedAccount) throws DAOException {
-        try {
-            RandomAccessFile randomAccessFile = new RandomAccessFile(accountsFile, "rw");
-            RandomAccessFile transfer = new RandomAccessFile(transferFile, "rw");
+        try (RandomAccessFile randomAccessFile = new RandomAccessFile(accountsFile, "rw");
+             RandomAccessFile transfer = new RandomAccessFile(transferFile, "rw");){
 
             FileChannel sourceChannel = randomAccessFile.getChannel();
             FileChannel transferChannel = transfer.getChannel();
@@ -99,9 +97,8 @@ public class FileAccountDAO implements AccountDAO {
 
     @Override
     public void deleteAccount(int userId, int accountId) throws DAOException {
-        try {
-            RandomAccessFile randomAccessFile = new RandomAccessFile(accountsFile, "rw");
-            RandomAccessFile transfer = new RandomAccessFile(transferFile, "rw");
+        try (RandomAccessFile randomAccessFile = new RandomAccessFile(accountsFile, "rw");
+             RandomAccessFile transfer = new RandomAccessFile(transferFile, "rw");){
 
             FileChannel sourceChannel = randomAccessFile.getChannel();
             FileChannel transferChannel = transfer.getChannel();
@@ -129,9 +126,8 @@ public class FileAccountDAO implements AccountDAO {
     @Override
     public Account[] getAllAccounts(int userId) throws DAOException {
 
-        try {
+        try (BufferedReader bufferedReader = new BufferedReader(new FileReader(accountsFile));) {
             ArrayList<Account> accounts = new ArrayList<>();
-            BufferedReader bufferedReader = new BufferedReader(new FileReader(accountsFile));
             String currentLine, currentUserId;
             String[] accountInfo;
             while ((currentLine = bufferedReader.readLine()) != null) {
@@ -153,9 +149,8 @@ public class FileAccountDAO implements AccountDAO {
 
     @Override
     public Account getAccount(int userId, int accountId) throws DAOException {
-        try {
+        try (BufferedReader bufferedReader = new BufferedReader(new FileReader(accountsFile));){
             boolean isFound = false;
-            BufferedReader bufferedReader = new BufferedReader(new FileReader(accountsFile));
             String currentLine, currentUserAccountId, currentUserId;
             String[] accountInfo;
             Account account = new Account();
@@ -183,8 +178,7 @@ public class FileAccountDAO implements AccountDAO {
     @Override
     public boolean hasAccount(int userId, int accountId) throws DAOException {
         boolean isFound = false;
-        try {
-            BufferedReader bufferedReader = new BufferedReader(new FileReader(accountsFile));
+        try (BufferedReader bufferedReader = new BufferedReader(new FileReader(accountsFile));){
             String currentLine, currentAccountUserId, currentAccountId;
             String[] accountInfo;
             while ((currentLine = bufferedReader.readLine()) != null) {

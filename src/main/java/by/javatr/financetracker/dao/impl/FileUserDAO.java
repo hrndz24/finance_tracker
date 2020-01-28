@@ -28,12 +28,10 @@ public class FileUserDAO implements UserDAO {
 
     @Override
     public void addUser(User user, char[] password) throws DAOException {
-        try {
-            BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(usersFile, true));
+        try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(usersFile, true));) {
             int hashedPassword = passwordHashCode(password);
             bufferedWriter.write(user.getLogIn() + dataSeparator
                     + hashedPassword + dataSeparator + user.getId() + "\n");
-            bufferedWriter.close();
         } catch (IOException e) {
             throw new DAOException(e);
         }
@@ -41,8 +39,7 @@ public class FileUserDAO implements UserDAO {
 
     @Override
     public boolean hasUser(String logIn, char[] password) throws DAOException {
-        try {
-            Scanner scanner = new Scanner(usersFile);
+        try (Scanner scanner = new Scanner(usersFile);){
             int hashedPassword = passwordHashCode(password);
             String[] userInfo;
             while (scanner.hasNextLine()) {
@@ -59,8 +56,7 @@ public class FileUserDAO implements UserDAO {
 
     @Override
     public boolean hasUser(String logIn) throws DAOException {
-        try {
-            Scanner scanner = new Scanner(usersFile);
+        try (Scanner scanner = new Scanner(usersFile);){
             String[] userInfo;
             while (scanner.hasNextLine()) {
                 userInfo = scanner.nextLine().split(dataSeparator);
@@ -76,9 +72,8 @@ public class FileUserDAO implements UserDAO {
 
     @Override
     public void deleteUser(int userId) throws DAOException {
-        try {
-            RandomAccessFile randomAccessFile = new RandomAccessFile(usersFile, "rw");
-            RandomAccessFile transfer = new RandomAccessFile(transferFile, "rw");
+        try (RandomAccessFile randomAccessFile = new RandomAccessFile(usersFile, "rw");
+             RandomAccessFile transfer = new RandomAccessFile(transferFile, "rw");){
 
             FileChannel sourceChannel = randomAccessFile.getChannel();
             FileChannel transferChannel = transfer.getChannel();
@@ -111,9 +106,8 @@ public class FileUserDAO implements UserDAO {
 
     @Override
     public void editLogIn(int userId, String newLogIn) throws DAOException {
-        try {
-            RandomAccessFile randomAccessFile = new RandomAccessFile(usersFile, "rw");
-            RandomAccessFile transfer = new RandomAccessFile(transferFile, "rw");
+        try (RandomAccessFile randomAccessFile = new RandomAccessFile(usersFile, "rw");
+             RandomAccessFile transfer = new RandomAccessFile(transferFile, "rw");){
 
             FileChannel sourceChannel = randomAccessFile.getChannel();
             FileChannel transferChannel = transfer.getChannel();
@@ -149,9 +143,8 @@ public class FileUserDAO implements UserDAO {
 
     @Override
     public void editPassword(int userId, char[] newPassword) throws DAOException {
-        try {
-            RandomAccessFile randomAccessFile = new RandomAccessFile(usersFile, "rw");
-            RandomAccessFile transfer = new RandomAccessFile(transferFile, "rw");
+        try (RandomAccessFile randomAccessFile = new RandomAccessFile(usersFile, "rw");
+             RandomAccessFile transfer = new RandomAccessFile(transferFile, "rw");){
 
             FileChannel sourceChannel = randomAccessFile.getChannel();
             FileChannel transferChannel = transfer.getChannel();
@@ -189,8 +182,7 @@ public class FileUserDAO implements UserDAO {
 
     @Override
     public User getUser(String logIn) throws DAOException {
-        try {
-            BufferedReader bufferedReader = new BufferedReader(new FileReader(usersFile));
+        try (BufferedReader bufferedReader = new BufferedReader(new FileReader(usersFile));){
             String line;
             String[] userInfo;
             while ((line = bufferedReader.readLine()) != null) {

@@ -32,9 +32,8 @@ public class FileIncomeDAO implements IncomeDAO {
 
     @Override
     public void addIncome(int userId, Income income) throws DAOException {
-        try {
-            RandomAccessFile randomAccessFile = new RandomAccessFile(transactionsFile, "rw");
-            RandomAccessFile transfer = new RandomAccessFile(transferFile, "rw");
+        try (RandomAccessFile randomAccessFile = new RandomAccessFile(transactionsFile, "rw");
+             RandomAccessFile transfer = new RandomAccessFile(transferFile, "rw");){
 
             FileChannel sourceChannel = randomAccessFile.getChannel();
             FileChannel transferChannel = transfer.getChannel();
@@ -70,9 +69,8 @@ public class FileIncomeDAO implements IncomeDAO {
 
     @Override
     public void editIncome(int userId, Income income) throws DAOException {
-        try {
-            RandomAccessFile randomAccessFile = new RandomAccessFile(transactionsFile, "rw");
-            RandomAccessFile transfer = new RandomAccessFile(transferFile, "rw");
+        try (RandomAccessFile randomAccessFile = new RandomAccessFile(transactionsFile, "rw");
+             RandomAccessFile transfer = new RandomAccessFile(transferFile, "rw");){
 
             FileChannel sourceChannel = randomAccessFile.getChannel();
             FileChannel transferChannel = transfer.getChannel();
@@ -107,9 +105,8 @@ public class FileIncomeDAO implements IncomeDAO {
 
     @Override
     public void deleteIncome(int userId, int incomeId) throws DAOException {
-        try {
-            RandomAccessFile randomAccessFile = new RandomAccessFile(transactionsFile, "rw");
-            RandomAccessFile transfer = new RandomAccessFile(transferFile, "rw");
+        try (RandomAccessFile randomAccessFile = new RandomAccessFile(transactionsFile, "rw");
+             RandomAccessFile transfer = new RandomAccessFile(transferFile, "rw");){
 
             FileChannel sourceChannel = randomAccessFile.getChannel();
             FileChannel transferChannel = transfer.getChannel();
@@ -136,9 +133,8 @@ public class FileIncomeDAO implements IncomeDAO {
 
     @Override
     public Income getIncome(int userId, int incomeId) throws DAOException {
-        try {
+        try (BufferedReader bufferedReader = new BufferedReader(new FileReader(transactionsFile));){
             boolean isFound = false;
-            BufferedReader bufferedReader = new BufferedReader(new FileReader(transactionsFile));
             String currentTransaction, currentTransactionUserId, currentTransactionId;
             String[] transactionInfo;
             Income income = new Income();
@@ -167,10 +163,8 @@ public class FileIncomeDAO implements IncomeDAO {
 
     @Override
     public Income[] getAllIncomes(int userId) throws DAOException {
-        try {
-
+        try (BufferedReader bufferedReader = new BufferedReader(new FileReader(transactionsFile));){
             ArrayList<Income> incomes = new ArrayList<>();
-            BufferedReader bufferedReader = new BufferedReader(new FileReader(transactionsFile));
             String currentTransaction, currentTransactionUserId;
             String[] transactionInfo;
             while ((currentTransaction = bufferedReader.readLine()) != null) {

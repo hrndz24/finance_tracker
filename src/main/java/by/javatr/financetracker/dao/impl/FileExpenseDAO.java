@@ -32,9 +32,8 @@ public class FileExpenseDAO implements ExpenseDAO {
 
     @Override
     public void addExpense(int userId, Expense expense) throws DAOException {
-        try {
-            RandomAccessFile randomAccessFile = new RandomAccessFile(transactionsFile, "rw");
-            RandomAccessFile transfer = new RandomAccessFile(transferFile, "rw");
+        try (RandomAccessFile randomAccessFile = new RandomAccessFile(transactionsFile, "rw");
+             RandomAccessFile transfer = new RandomAccessFile(transferFile, "rw");){
 
             FileChannel sourceChannel = randomAccessFile.getChannel();
             FileChannel transferChannel = transfer.getChannel();
@@ -71,9 +70,8 @@ public class FileExpenseDAO implements ExpenseDAO {
     @Override
     public void editExpense(int userId, Expense editedExpense) throws DAOException {
 
-        try {
-            RandomAccessFile randomAccessFile = new RandomAccessFile(transactionsFile, "rw");
-            RandomAccessFile transfer = new RandomAccessFile(transferFile, "rw");
+        try (RandomAccessFile randomAccessFile = new RandomAccessFile(transactionsFile, "rw");
+             RandomAccessFile transfer = new RandomAccessFile(transferFile, "rw");){
 
             FileChannel sourceChannel = randomAccessFile.getChannel();
             FileChannel transferChannel = transfer.getChannel();
@@ -108,9 +106,8 @@ public class FileExpenseDAO implements ExpenseDAO {
 
     @Override
     public void deleteExpense(int userId, int expenseId) throws DAOException {
-        try {
-            RandomAccessFile randomAccessFile = new RandomAccessFile(transactionsFile, "rw");
-            RandomAccessFile transfer = new RandomAccessFile(transferFile, "rw");
+        try (RandomAccessFile randomAccessFile = new RandomAccessFile(transactionsFile, "rw");
+             RandomAccessFile transfer = new RandomAccessFile(transferFile, "rw");){
 
             FileChannel sourceChannel = randomAccessFile.getChannel();
             FileChannel transferChannel = transfer.getChannel();
@@ -138,9 +135,8 @@ public class FileExpenseDAO implements ExpenseDAO {
 
     @Override
     public Expense getExpense(int userId, int expenseId) throws DAOException {
-        try {
+        try (BufferedReader bufferedReader = new BufferedReader(new FileReader(transactionsFile));) {
             boolean isFound = false;
-            BufferedReader bufferedReader = new BufferedReader(new FileReader(transactionsFile));
             String currentTransaction, currentTransactionUserId, currentTransactionId;
             String[] transactionInfo;
             Expense expense = new Expense();
@@ -169,9 +165,8 @@ public class FileExpenseDAO implements ExpenseDAO {
 
     @Override
     public Expense[] getAllExpenses(int userId) throws DAOException {
-        try {
+        try (BufferedReader bufferedReader = new BufferedReader(new FileReader(transactionsFile));){
             ArrayList<Expense> expenses = new ArrayList<>();
-            BufferedReader bufferedReader = new BufferedReader(new FileReader(transactionsFile));
             String currentTransaction, currentTransactionUserId;
             String[] transactionInfo;
             while ((currentTransaction = bufferedReader.readLine()) != null) {

@@ -3,10 +3,9 @@
   <component name="ChangeListManager">
     <list default="true" id="1a9c9a27-e7c9-43af-ace8-407358342ba2" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/by/javatr/financetracker/controller/stringvalues/controllerString.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/properties/controllerString.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/by/javatr/financetracker/dao/stringvalues/DAOString.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/properties/DAOString.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/by/javatr/financetracker/service/stringvalues/StringProperty.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/by/javatr/financetracker/service/stringvalues/StringProperty.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/by/javatr/financetracker/service/stringvalues/serviceString.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/properties/serviceString.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/project_buyanova_natallia.iml" beforeDir="false" afterPath="$PROJECT_DIR$/project_buyanova_natallia.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/by/javatr/financetracker/dao/impl/FileAccountDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/by/javatr/financetracker/dao/impl/FileAccountDAO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/by/javatr/financetracker/dao/impl/FileUserDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/by/javatr/financetracker/dao/impl/FileUserDAO.java" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -35,6 +34,12 @@
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
     <property name="settings.editor.selected.configurable" value="reference.projectsettings.compiler.javacompiler" />
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\java projects\project_buyanova_natallia\src\main\resources" />
+      <recent name="D:\java projects\project_buyanova_natallia\src\main\resources\properties" />
+    </key>
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
