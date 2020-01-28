@@ -8,6 +8,7 @@ import by.javatr.financetracker.dao.exception.DAOException;
 import by.javatr.financetracker.dao.factory.DAOFactory;
 import by.javatr.financetracker.service.FinanceTrackerService;
 import by.javatr.financetracker.service.exception.FinanceTrackerServiceException;
+import by.javatr.financetracker.service.validation.FinanceTrackerServiceValidator;
 
 import java.math.BigDecimal;
 import java.util.*;
@@ -26,15 +27,15 @@ public class FinanceTrackerServiceImpl implements FinanceTrackerService {
             throw new FinanceTrackerServiceException("Null expense.");
         }
 
-        if (expense.getSum().doubleValue() < 0) {
+        if (!FinanceTrackerServiceValidator.isValidTransactionSum(expense.getSum())) {
             throw new FinanceTrackerServiceException("Invalid transaction sum.");
         }
 
-        if (expense.getDate().after(new Date())) {
+        if (!FinanceTrackerServiceValidator.isValidTransactionDate(expense.getDate())) {
             throw new FinanceTrackerServiceException("Invalid transaction date.");
         }
 
-        if (expense.getNote() == null || expense.getNote().equals("null")) {
+        if (!FinanceTrackerServiceValidator.isValidNote(expense.getNote())) {
             throw new FinanceTrackerServiceException("Null note.");
         }
 
@@ -61,15 +62,15 @@ public class FinanceTrackerServiceImpl implements FinanceTrackerService {
             throw new FinanceTrackerServiceException("Null expense.");
         }
 
-        if (editedExpense.getSum().doubleValue() < 0) {
+        if (!FinanceTrackerServiceValidator.isValidTransactionSum(editedExpense.getSum())) {
             throw new FinanceTrackerServiceException("Invalid transaction sum.");
         }
 
-        if (editedExpense.getDate().after(new Date())) {
+        if (!FinanceTrackerServiceValidator.isValidTransactionDate(editedExpense.getDate())) {
             throw new FinanceTrackerServiceException("Invalid transaction date.");
         }
 
-        if (editedExpense.getNote() == null || editedExpense.getNote().equals("null")) {
+        if (!FinanceTrackerServiceValidator.isValidNote(editedExpense.getNote())) {
             throw new FinanceTrackerServiceException("Null note.");
         }
 
@@ -107,14 +108,8 @@ public class FinanceTrackerServiceImpl implements FinanceTrackerService {
             throw new FinanceTrackerServiceException("Failed to access accounts' data.", e);
         }
 
-        expense.setSum(editedExpense.getSum());
-        expense.setCategory(editedExpense.getCategory());
-        expense.setDate(editedExpense.getDate());
-        expense.setNote(editedExpense.getNote());
-        expense.setAccountId(editedExpense.getAccountId());
-
         try {
-            expenseDAO.editExpense(userId, expense);
+            expenseDAO.editExpense(userId, editedExpense);
         } catch (DAOException e) {
             throw new FinanceTrackerServiceException("Failed to access expenses' data.", e);
         }
@@ -137,15 +132,15 @@ public class FinanceTrackerServiceImpl implements FinanceTrackerService {
             throw new FinanceTrackerServiceException("Null income.");
         }
 
-        if (income.getSum().doubleValue() < 0) {
+        if (!FinanceTrackerServiceValidator.isValidTransactionSum(income.getSum())) {
             throw new FinanceTrackerServiceException("Invalid transaction sum.");
         }
 
-        if (income.getDate().after(new Date())) {
+        if (!FinanceTrackerServiceValidator.isValidTransactionDate(income.getDate())) {
             throw new FinanceTrackerServiceException("Invalid transaction date.");
         }
 
-        if (income.getNote() == null || income.getNote().equals("null")) {
+        if (!FinanceTrackerServiceValidator.isValidNote(income.getNote())) {
             throw new FinanceTrackerServiceException("Null note.");
         }
 
@@ -171,15 +166,15 @@ public class FinanceTrackerServiceImpl implements FinanceTrackerService {
             throw new FinanceTrackerServiceException("Null income.");
         }
 
-        if (editedIncome.getSum().doubleValue() < 0) {
+        if (!FinanceTrackerServiceValidator.isValidTransactionSum(editedIncome.getSum())) {
             throw new FinanceTrackerServiceException("Invalid transaction sum.");
         }
 
-        if (editedIncome.getDate().after(new Date())) {
+        if (!FinanceTrackerServiceValidator.isValidTransactionDate(editedIncome.getDate())) {
             throw new FinanceTrackerServiceException("Invalid transaction date.");
         }
 
-        if (editedIncome.getNote() == null || editedIncome.getNote().equals("null")) {
+        if (!FinanceTrackerServiceValidator.isValidNote(editedIncome.getNote())) {
             throw new FinanceTrackerServiceException("Null note.");
         }
 
@@ -217,12 +212,6 @@ public class FinanceTrackerServiceImpl implements FinanceTrackerService {
             throw new FinanceTrackerServiceException("Failed to access accounts' data.", e);
         }
 
-        income.setSum(editedIncome.getSum());
-        income.setCategory(editedIncome.getCategory());
-        income.setDate(editedIncome.getDate());
-        income.setNote(editedIncome.getNote());
-        income.setAccountId(editedIncome.getAccountId());
-
         try {
             incomeDAO.editIncome(userId, editedIncome);
         } catch (DAOException e) {
@@ -246,7 +235,7 @@ public class FinanceTrackerServiceImpl implements FinanceTrackerService {
             throw new FinanceTrackerServiceException("Null account.");
         }
 
-        if (account.getName().isEmpty() || account.getName() == null) {
+        if (!FinanceTrackerServiceValidator.isValidAccountName(account.getName())) {
             throw new FinanceTrackerServiceException("Null account name.");
         }
 
@@ -263,7 +252,7 @@ public class FinanceTrackerServiceImpl implements FinanceTrackerService {
             throw new FinanceTrackerServiceException("Null account.");
         }
 
-        if (editedAccount.getName().isEmpty() || editedAccount.getName() == null) {
+        if (!FinanceTrackerServiceValidator.isValidAccountName(editedAccount.getName())) {
             throw new FinanceTrackerServiceException("Null account name.");
         }
 
@@ -375,7 +364,7 @@ public class FinanceTrackerServiceImpl implements FinanceTrackerService {
             throw new FinanceTrackerServiceException("Attempt to transfer money to the same account");
         }
 
-        if (sum.doubleValue() < 0) {
+        if (!FinanceTrackerServiceValidator.isValidTransactionSum(sum)) {
             throw new FinanceTrackerServiceException("Invalid transaction sum");
         }
 

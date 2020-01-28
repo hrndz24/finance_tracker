@@ -2,7 +2,7 @@ package by.javatr.financetracker.service.validation;
 
 import by.javatr.financetracker.service.stringvalues.StringProperty;
 
-public class Validator {
+public class ClientServiceValidator {
     public static boolean isValidLogIn(String logIn) {
         String invalidCharacters = StringProperty.getStringValue("invalidLogInCharacters");
         for (char c : logIn.toCharArray()) {

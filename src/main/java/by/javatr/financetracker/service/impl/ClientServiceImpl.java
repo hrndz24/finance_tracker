@@ -13,7 +13,7 @@ import by.javatr.financetracker.dao.factory.DAOFactory;
 import by.javatr.financetracker.service.ClientService;
 import by.javatr.financetracker.service.exception.ClientServiceException;
 import by.javatr.financetracker.service.stringvalues.StringProperty;
-import by.javatr.financetracker.service.validation.Validator;
+import by.javatr.financetracker.service.validation.ClientServiceValidator;
 
 import java.math.BigDecimal;
 
@@ -35,15 +35,15 @@ public class ClientServiceImpl implements ClientService {
             throw new ClientServiceException("Null password.");
         }
 
-        if (Validator.isWeakPassword(password)) {
+        if (ClientServiceValidator.isWeakPassword(password)) {
             throw new ClientServiceException("Weak password.");
         }
 
-        if (!Validator.isValidPassword(password)) {
+        if (!ClientServiceValidator.isValidPassword(password)) {
             throw new ClientServiceException("Invalid password characters.");
         }
 
-        if (!Validator.isValidLogIn(logIn)) {
+        if (!ClientServiceValidator.isValidLogIn(logIn)) {
             throw new ClientServiceException("Invalid logIn characters.");
         }
 
@@ -134,7 +134,7 @@ public class ClientServiceImpl implements ClientService {
         if (newLogIn == null || newLogIn.isEmpty()) {
             throw new ClientServiceException("Null new logIn.");
         }
-        if (!Validator.isValidLogIn(newLogIn)) {
+        if (!ClientServiceValidator.isValidLogIn(newLogIn)) {
             throw new ClientServiceException("LogIn contains invalid characters");
         }
 
@@ -159,10 +159,10 @@ public class ClientServiceImpl implements ClientService {
         if (oldPassword == null || newPassword == null) {
             throw new ClientServiceException("Null password.");
         }
-        if (Validator.isWeakPassword(newPassword)) {
+        if (ClientServiceValidator.isWeakPassword(newPassword)) {
             throw new ClientServiceException("Weak password.");
         }
-        if (!Validator.isValidPassword(newPassword)) {
+        if (!ClientServiceValidator.isValidPassword(newPassword)) {
             throw new ClientServiceException("Password contains invalid characters.");
         }
 
