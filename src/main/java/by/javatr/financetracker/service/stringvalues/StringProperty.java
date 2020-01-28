@@ -9,7 +9,7 @@ public class StringProperty {
     static {
         properties = new Properties();
         try {
-            properties.load(new FileReader("src/main/java/by/javatr/financetracker/service/stringvalues/serviceString.properties"));
+            properties.load(new FileReader("src/main/java/resources/properties/serviceString.properties"));
         } catch (IOException ignored) {
         }
     }
