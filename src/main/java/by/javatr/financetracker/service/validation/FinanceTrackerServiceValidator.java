@@ -6,18 +6,18 @@ import java.util.Date;
 public class FinanceTrackerServiceValidator {
 
     public static boolean isValidTransactionSum(BigDecimal sum) {
-        return sum.doubleValue() >= 0;
+        return sum != null && sum.doubleValue() > 0;
     }
 
     public static boolean isValidTransactionDate(Date date) {
-        return date.after(new Date());
+        return date != null && date.before(new Date());
     }
 
     public static boolean isValidNote(String note) {
-        return note == null || note.equals("null");
+        return note != null && !note.equals("null");
     }
 
     public static boolean isValidAccountName(String name) {
-        return name == null || name.isEmpty();
+        return name != null && !name.isEmpty();
     }
 }
