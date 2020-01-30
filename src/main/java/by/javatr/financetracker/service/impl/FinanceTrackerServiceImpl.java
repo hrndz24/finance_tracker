@@ -1,6 +1,6 @@
 package by.javatr.financetracker.service.impl;
 
-import by.javatr.financetracker.bean.*;
+import by.javatr.financetracker.entity.*;
 import by.javatr.financetracker.dao.AccountDAO;
 import by.javatr.financetracker.dao.ExpenseDAO;
 import by.javatr.financetracker.dao.IncomeDAO;

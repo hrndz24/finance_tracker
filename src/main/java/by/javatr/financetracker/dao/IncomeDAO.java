@@ -1,6 +1,6 @@
 package by.javatr.financetracker.dao;
 
-import by.javatr.financetracker.bean.Income;
+import by.javatr.financetracker.entity.Income;
 import by.javatr.financetracker.dao.exception.DAOException;
 
 public interface IncomeDAO {

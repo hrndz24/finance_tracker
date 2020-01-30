@@ -1,6 +1,6 @@
 package by.javatr.financetracker.service;
 
-import by.javatr.financetracker.bean.*;
+import by.javatr.financetracker.entity.*;
 import by.javatr.financetracker.service.exception.FinanceTrackerServiceException;
 
 import java.math.BigDecimal;

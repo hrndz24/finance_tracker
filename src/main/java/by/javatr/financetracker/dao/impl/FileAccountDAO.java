@@ -1,9 +1,9 @@
 package by.javatr.financetracker.dao.impl;
 
-import by.javatr.financetracker.bean.Account;
+import by.javatr.financetracker.entity.Account;
 import by.javatr.financetracker.dao.AccountDAO;
 import by.javatr.financetracker.dao.exception.*;
-import by.javatr.financetracker.dao.stringvalues.StringProperty;
+import by.javatr.financetracker.dao.constants.StringProperty;
 
 import java.io.*;
 import java.math.BigDecimal;

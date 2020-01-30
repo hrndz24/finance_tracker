@@ -1,9 +1,9 @@
 package by.javatr.financetracker.service.impl;
 
-import by.javatr.financetracker.bean.Account;
-import by.javatr.financetracker.bean.Expense;
-import by.javatr.financetracker.bean.Income;
-import by.javatr.financetracker.bean.User;
+import by.javatr.financetracker.entity.Account;
+import by.javatr.financetracker.entity.Expense;
+import by.javatr.financetracker.entity.Income;
+import by.javatr.financetracker.entity.User;
 import by.javatr.financetracker.dao.AccountDAO;
 import by.javatr.financetracker.dao.ExpenseDAO;
 import by.javatr.financetracker.dao.IncomeDAO;
@@ -12,7 +12,7 @@ import by.javatr.financetracker.dao.exception.DAOException;
 import by.javatr.financetracker.dao.factory.DAOFactory;
 import by.javatr.financetracker.service.ClientService;
 import by.javatr.financetracker.service.exception.ClientServiceException;
-import by.javatr.financetracker.service.stringvalues.StringProperty;
+import by.javatr.financetracker.service.constants.StringProperty;
 import by.javatr.financetracker.service.validation.ClientServiceValidator;
 
 import java.math.BigDecimal;

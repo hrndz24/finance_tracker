@@ -1,6 +1,6 @@
 package by.javatr.financetracker.service.validation;
 
-import by.javatr.financetracker.service.stringvalues.StringProperty;
+import by.javatr.financetracker.service.constants.StringProperty;
 
 public class ClientServiceValidator {
     public static boolean isValidLogIn(String logIn) {

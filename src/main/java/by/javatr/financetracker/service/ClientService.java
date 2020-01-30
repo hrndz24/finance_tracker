@@ -1,6 +1,6 @@
 package by.javatr.financetracker.service;
 
-import by.javatr.financetracker.bean.User;
+import by.javatr.financetracker.entity.User;
 import by.javatr.financetracker.service.exception.ClientServiceException;
 
 public interface ClientService {

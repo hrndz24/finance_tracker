@@ -1,9 +1,9 @@
 package by.javatr.financetracker.controller.command.impl;
 
-import by.javatr.financetracker.bean.Income;
-import by.javatr.financetracker.bean.IncomeCategory;
+import by.javatr.financetracker.entity.Income;
+import by.javatr.financetracker.entity.IncomeCategory;
 import by.javatr.financetracker.controller.command.Command;
-import by.javatr.financetracker.controller.stringvalues.StringProperty;
+import by.javatr.financetracker.controller.constants.StringProperty;
 import by.javatr.financetracker.service.FinanceTrackerService;
 import by.javatr.financetracker.service.exception.FinanceTrackerServiceException;
 import by.javatr.financetracker.service.factory.ServiceFactory;

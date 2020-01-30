@@ -8,7 +8,7 @@ import by.javatr.financetracker.dao.impl.FileAccountDAO;
 import by.javatr.financetracker.dao.impl.FileExpenseDAO;
 import by.javatr.financetracker.dao.impl.FileIncomeDAO;
 import by.javatr.financetracker.dao.impl.FileUserDAO;
-import by.javatr.financetracker.dao.stringvalues.StringProperty;
+import by.javatr.financetracker.dao.constants.StringProperty;
 
 public final class DAOFactory {
 
