@@ -6,8 +6,8 @@ import by.javatr.financetracker.entity.Transaction;
 import by.javatr.financetracker.controller.command.Command;
 import by.javatr.financetracker.controller.constants.StringProperty;
 import by.javatr.financetracker.service.FinanceTrackerService;
-import by.javatr.financetracker.service.exception.FinanceTrackerServiceException;
-import by.javatr.financetracker.service.factory.ServiceFactory;
+import by.javatr.financetracker.exception.ServiceException;
+import by.javatr.financetracker.factory.ServiceFactory;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -50,7 +50,7 @@ public class GetTransactionsHistoryByDate implements Command {
                 stringBuilder.append(transactionString).append("\n");
             }
             response = stringBuilder.toString();
-        } catch (FinanceTrackerServiceException e) {
+        } catch (ServiceException e) {
             response = StringProperty.getStringValue("failedToGetTransactionsByDate");
         }
         return response;

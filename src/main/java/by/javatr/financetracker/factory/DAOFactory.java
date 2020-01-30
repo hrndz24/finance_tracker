@@ -1,4 +1,4 @@
-package by.javatr.financetracker.dao.factory;
+package by.javatr.financetracker.factory;
 
 import by.javatr.financetracker.dao.AccountDAO;
 import by.javatr.financetracker.dao.ExpenseDAO;

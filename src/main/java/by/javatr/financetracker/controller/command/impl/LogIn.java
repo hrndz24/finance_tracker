@@ -4,8 +4,7 @@ import by.javatr.financetracker.entity.User;
 import by.javatr.financetracker.controller.command.Command;
 import by.javatr.financetracker.controller.constants.StringProperty;
 import by.javatr.financetracker.service.ClientService;
-import by.javatr.financetracker.service.exception.ClientServiceException;
-import by.javatr.financetracker.service.factory.ServiceFactory;
+import by.javatr.financetracker.factory.ServiceFactory;
 
 public class LogIn implements Command {
 
@@ -23,7 +22,7 @@ public class LogIn implements Command {
         try {
             User user = clientService.logIn(logIn, password);
             response = user.getId() + delimiter + user.getLogIn();
-        } catch (ClientServiceException e) {
+        } catch (ServiceException e) {
             response = StringProperty.getStringValue("logInFailed") + e.getMessage();
         }
         return response;

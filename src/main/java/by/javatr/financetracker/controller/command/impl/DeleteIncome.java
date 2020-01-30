@@ -3,8 +3,8 @@ package by.javatr.financetracker.controller.command.impl;
 import by.javatr.financetracker.controller.command.Command;
 import by.javatr.financetracker.controller.constants.StringProperty;
 import by.javatr.financetracker.service.FinanceTrackerService;
-import by.javatr.financetracker.service.exception.FinanceTrackerServiceException;
-import by.javatr.financetracker.service.factory.ServiceFactory;
+import by.javatr.financetracker.exception.ServiceException;
+import by.javatr.financetracker.factory.ServiceFactory;
 
 public class DeleteIncome implements Command {
     @Override
@@ -21,7 +21,7 @@ public class DeleteIncome implements Command {
         try {
             financeTracker.deleteIncome(userId, incomeId);
             response = StringProperty.getStringValue("incomeDeleted");
-        } catch (FinanceTrackerServiceException e) {
+        } catch (ServiceException e) {
             response = StringProperty.getStringValue("failedToDeleteIncome") + e.getMessage();
         }
         return response;

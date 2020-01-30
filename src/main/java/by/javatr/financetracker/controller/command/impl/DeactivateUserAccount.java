@@ -4,8 +4,8 @@ import by.javatr.financetracker.entity.User;
 import by.javatr.financetracker.controller.command.Command;
 import by.javatr.financetracker.controller.constants.StringProperty;
 import by.javatr.financetracker.service.ClientService;
-import by.javatr.financetracker.service.exception.ClientServiceException;
-import by.javatr.financetracker.service.factory.ServiceFactory;
+import by.javatr.financetracker.factory.ServiceFactory;
+import by.javatr.financetracker.exception.ServiceException;
 
 public class DeactivateUserAccount implements Command {
 
@@ -25,7 +25,7 @@ public class DeactivateUserAccount implements Command {
         try {
             clientService.deactivateAccount(user, password);
             response = StringProperty.getStringValue("userAccountDeactivated");
-        } catch (ClientServiceException e) {
+        } catch (ServiceException e) {
             response = StringProperty.getStringValue("failedToDeactivateAccount") + e.getMessage();
         }
         return response;

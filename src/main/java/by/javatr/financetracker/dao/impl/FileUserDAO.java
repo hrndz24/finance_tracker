@@ -2,7 +2,7 @@ package by.javatr.financetracker.dao.impl;
 
 import by.javatr.financetracker.entity.User;
 import by.javatr.financetracker.dao.UserDAO;
-import by.javatr.financetracker.dao.exception.DAOException;
+import by.javatr.financetracker.exception.DAOException;
 import by.javatr.financetracker.dao.constants.StringProperty;
 
 import java.io.*;

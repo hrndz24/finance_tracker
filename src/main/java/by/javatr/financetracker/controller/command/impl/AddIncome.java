@@ -5,8 +5,8 @@ import by.javatr.financetracker.entity.IncomeCategory;
 import by.javatr.financetracker.controller.command.Command;
 import by.javatr.financetracker.controller.constants.StringProperty;
 import by.javatr.financetracker.service.FinanceTrackerService;
-import by.javatr.financetracker.service.exception.FinanceTrackerServiceException;
-import by.javatr.financetracker.service.factory.ServiceFactory;
+import by.javatr.financetracker.exception.ServiceException;
+import by.javatr.financetracker.factory.ServiceFactory;
 
 import java.math.BigDecimal;
 import java.text.ParseException;
@@ -48,7 +48,7 @@ public class AddIncome implements Command {
         try {
             financeTracker.addIncome(userId, income);
             response = StringProperty.getStringValue("incomeAdded");
-        } catch (FinanceTrackerServiceException e) {
+        } catch (ServiceException e) {
             response = StringProperty.getStringValue("failedToAddIncome") + e.getMessage();
         }
         return response;

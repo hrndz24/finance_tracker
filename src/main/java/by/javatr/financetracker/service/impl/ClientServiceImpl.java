@@ -8,11 +8,11 @@ import by.javatr.financetracker.dao.AccountDAO;
 import by.javatr.financetracker.dao.ExpenseDAO;
 import by.javatr.financetracker.dao.IncomeDAO;
 import by.javatr.financetracker.dao.UserDAO;
-import by.javatr.financetracker.dao.exception.DAOException;
-import by.javatr.financetracker.dao.factory.DAOFactory;
+import by.javatr.financetracker.exception.DAOException;
+import by.javatr.financetracker.factory.DAOFactory;
 import by.javatr.financetracker.service.ClientService;
-import by.javatr.financetracker.service.exception.ClientServiceException;
 import by.javatr.financetracker.service.constants.StringProperty;
+import by.javatr.financetracker.exception.ServiceException;
 import by.javatr.financetracker.service.validation.ClientServiceValidator;
 
 import java.math.BigDecimal;
@@ -26,84 +26,84 @@ public class ClientServiceImpl implements ClientService {
     private UserDAO userDAO = daoFactory.getUserDao();
 
     @Override
-    public User signUp(String logIn, char[] password) throws ClientServiceException {
+    public User signUp(String logIn, char[] password) throws ServiceException {
         if (logIn == null || logIn.isEmpty()) {
-            throw new ClientServiceException("Null logIn.");
+            throw new ServiceException("Null logIn.");
         }
 
         if (password == null) {
-            throw new ClientServiceException("Null password.");
+            throw new ServiceException("Null password.");
         }
 
         if (ClientServiceValidator.isWeakPassword(password)) {
-            throw new ClientServiceException("Weak password.");
+            throw new ServiceException("Weak password.");
         }
 
         if (!ClientServiceValidator.isValidPassword(password)) {
-            throw new ClientServiceException("Invalid password characters.");
+            throw new ServiceException("Invalid password characters.");
         }
 
         if (!ClientServiceValidator.isValidLogIn(logIn)) {
-            throw new ClientServiceException("Invalid logIn characters.");
+            throw new ServiceException("Invalid logIn characters.");
         }
 
         try {
             if (userDAO.hasUser(logIn)) {
-                throw new ClientServiceException("LogIn is already taken.");
+                throw new ServiceException("LogIn is already taken.");
             }
         } catch (DAOException e) {
-            throw new ClientServiceException(e);
+            throw new ServiceException(e);
         }
 
         User user = new User(logIn);
         try {
             userDAO.addUser(user, password);
         } catch (DAOException e) {
-            throw new ClientServiceException(e);
+            throw new ServiceException(e);
         }
 
         Account account = new Account(StringProperty.getStringValue("firstDefaultAccountName"), new BigDecimal(0.0));
         try {
             accountDAO.addAccount(user.getId(), account);
         } catch (DAOException e) {
-            throw new ClientServiceException("Failed to access users' data.", e);
+            throw new ServiceException("Failed to access users' data.", e);
         }
         return user;
     }
 
     @Override
-    public User logIn(String logIn, char[] password) throws ClientServiceException {
+    public User logIn(String logIn, char[] password) throws ServiceException {
         if (logIn == null || logIn.isEmpty()) {
-            throw new ClientServiceException("Null logIn.");
+            throw new ServiceException("Null logIn.");
         }
         if (password == null) {
-            throw new ClientServiceException("Null password.");
+            throw new ServiceException("Null password.");
         }
         try {
             if (userDAO.hasUser(logIn, password)) {
                 return userDAO.getUser(logIn);
             } else {
-                throw new ClientServiceException("User with such logIn and password not found.");
+                throw new ServiceException("User with such logIn and password not found.");
             }
         } catch (DAOException e) {
-            throw new ClientServiceException("Failed to access users' data.", e);
+            throw new ServiceException("Failed to access users' data.", e);
         }
     }
 
     @Override
-    public void deactivateAccount(User user, char[] password) throws ClientServiceException {
+    public void deactivateAccount(User user, char[] password) throws ServiceException {
         if (user == null) {
-            throw new ClientServiceException("Null user.");
+            throw new ServiceException("Null user.");
         }
         if (password == null) {
-            throw new ClientServiceException("Null password.");
+            throw new ServiceException("Null password.");
         }
 
         try {
             if (userDAO.hasUser(user.getLogIn(), password)) {
                 userDAO.deleteUser(user.getId());
             } else {
-                throw new ClientServiceException("User with such logIn and password not found.");
+                throw new ServiceException("User with such logIn and password not found.");
             }
 
             Account[] accounts = accountDAO.getAllAccounts(user.getId());
@@ -122,58 +122,58 @@ public class ClientServiceImpl implements ClientService {
             }
 
         } catch (DAOException e) {
-            throw new ClientServiceException("Failed to access users' data.", e);
+            throw new ServiceException("Failed to access users' data.", e);
         }
     }
 
     @Override
-    public void editLogIn(User user, String newLogIn) throws ClientServiceException {
+    public void editLogIn(User user, String newLogIn) throws ServiceException {
         if (user == null) {
-            throw new ClientServiceException("Null user.");
+            throw new ServiceException("Null user.");
         }
         if (newLogIn == null || newLogIn.isEmpty()) {
-            throw new ClientServiceException("Null new logIn.");
+            throw new ServiceException("Null new logIn.");
         }
         if (!ClientServiceValidator.isValidLogIn(newLogIn)) {
-            throw new ClientServiceException("LogIn contains invalid characters");
+            throw new ServiceException("LogIn contains invalid characters");
         }
 
         try {
             if (!userDAO.hasUser(user.getLogIn())) {
-                throw new ClientServiceException("No user with such logIn found");
+                throw new ServiceException("No user with such logIn found");
             }
             if (userDAO.hasUser(newLogIn)) {
-                throw new ClientServiceException("LogIn taken");
+                throw new ServiceException("LogIn taken");
             }
             userDAO.editLogIn(user.getId(), newLogIn);
         } catch (DAOException e) {
-            throw new ClientServiceException("Failed to access users' data.", e);
+            throw new ServiceException("Failed to access users' data.", e);
         }
     }
 
     @Override
-    public void changePassword(User user, char[] oldPassword, char[] newPassword) throws ClientServiceException {
+    public void changePassword(User user, char[] oldPassword, char[] newPassword) throws ServiceException {
         if (user == null) {
-            throw new ClientServiceException("Null user.");
+            throw new ServiceException("Null user.");
         }
         if (oldPassword == null || newPassword == null) {
-            throw new ClientServiceException("Null password.");
+            throw new ServiceException("Null password.");
         }
         if (ClientServiceValidator.isWeakPassword(newPassword)) {
-            throw new ClientServiceException("Weak password.");
+            throw new ServiceException("Weak password.");
         }
         if (!ClientServiceValidator.isValidPassword(newPassword)) {
-            throw new ClientServiceException("Password contains invalid characters.");
+            throw new ServiceException("Password contains invalid characters.");
         }
 
         try {
             if (userDAO.hasUser(user.getLogIn(), oldPassword)) {
                 userDAO.editPassword(user.getId(), newPassword);
             } else {
-                throw new ClientServiceException("User with such logIn and password not found");
+                throw new ServiceException("User with such logIn and password not found");
             }
         } catch (DAOException e) {
-            throw new ClientServiceException("Failed to access users' data.", e);
+            throw new ServiceException("Failed to access users' data.", e);
         }
     }
 

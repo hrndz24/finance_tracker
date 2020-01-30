@@ -1,4 +1,4 @@
-package by.javatr.financetracker.dao.exception;
+package by.javatr.financetracker.exception;
 
 public class DAOException extends Exception {
     public DAOException() {

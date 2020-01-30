@@ -1,4 +1,4 @@
-package by.javatr.financetracker.service.factory;
+package by.javatr.financetracker.factory;
 
 import by.javatr.financetracker.service.ClientService;
 import by.javatr.financetracker.service.FinanceTrackerService;

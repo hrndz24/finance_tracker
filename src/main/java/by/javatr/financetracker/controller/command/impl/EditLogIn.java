@@ -4,8 +4,8 @@ import by.javatr.financetracker.entity.User;
 import by.javatr.financetracker.controller.command.Command;
 import by.javatr.financetracker.controller.constants.StringProperty;
 import by.javatr.financetracker.service.ClientService;
-import by.javatr.financetracker.service.exception.ClientServiceException;
-import by.javatr.financetracker.service.factory.ServiceFactory;
+import by.javatr.financetracker.factory.ServiceFactory;
+import by.javatr.financetracker.exception.ServiceException;
 
 public class EditLogIn implements Command {
 
@@ -26,7 +26,7 @@ public class EditLogIn implements Command {
         try {
             clientService.editLogIn(user, newLogIn);
             response = StringProperty.getStringValue("logInEdited");
-        } catch (ClientServiceException e) {
+        } catch (ServiceException e) {
             response = StringProperty.getStringValue("failedToEditLogIn") + e.getMessage();
         }
         return response;

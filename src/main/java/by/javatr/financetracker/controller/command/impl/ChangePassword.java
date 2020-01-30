@@ -4,8 +4,8 @@ import by.javatr.financetracker.entity.User;
 import by.javatr.financetracker.controller.command.Command;
 import by.javatr.financetracker.controller.constants.StringProperty;
 import by.javatr.financetracker.service.ClientService;
-import by.javatr.financetracker.service.exception.ClientServiceException;
-import by.javatr.financetracker.service.factory.ServiceFactory;
+import by.javatr.financetracker.factory.ServiceFactory;
+import by.javatr.financetracker.exception.ServiceException;
 
 public class ChangePassword implements Command {
 
@@ -25,7 +25,7 @@ public class ChangePassword implements Command {
         try {
             clientService.changePassword(new User(logIn, userId), oldPassword, newPassword);
             response = StringProperty.getStringValue("passwordChanged");
-        } catch (ClientServiceException e) {
+        } catch (ServiceException e) {
             response = StringProperty.getStringValue("failedToChangePassword") + e.getMessage();
         }
         return response;
