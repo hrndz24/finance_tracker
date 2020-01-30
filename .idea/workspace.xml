@@ -2,20 +2,19 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="1a9c9a27-e7c9-43af-ace8-407358342ba2" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__junit_junit_4_12.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_hamcrest_hamcrest_core_1_3.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/java/by/javatr/financetracker/service/validation/ClientValidatorTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/by/javatr/financetracker/service/validation/ClientServiceValidatorTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project_buyanova_natallia.iml" beforeDir="false" afterPath="$PROJECT_DIR$/project_buyanova_natallia.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/by/javatr/financetracker/service/validation/FinanceTrackerServiceValidator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/by/javatr/financetracker/service/validation/FinanceTrackerServiceValidator.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/by/javatr/financetracker/service/validation/Validator.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/by/javatr/financetracker/view/Main.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/maven-archiver/pom.properties" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/testCompile/default-testCompile/inputFiles.lst" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/project_buyanova_natallia-1.0-SNAPSHOT.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/by/javatr/financetracker/controller/stringvalues/StringProperty.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/by/javatr/financetracker/controller/stringvalues/StringProperty.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/by/javatr/financetracker/dao/stringvalues/StringProperty.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/by/javatr/financetracker/dao/stringvalues/StringProperty.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/by/javatr/financetracker/service/stringvalues/StringProperty.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/by/javatr/financetracker/service/stringvalues/StringProperty.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/by/javatr/financetracker/service/validation/ClientServiceValidator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/by/javatr/financetracker/service/validation/ClientServiceValidator.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/properties/serviceString.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/properties/serviceString.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/by/javatr/financetracker/service/validation/ClientValidatorTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/by/javatr/financetracker/service/validation/FinanceTrackerServiceValidatorTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/by/javatr/financetracker/service/validation/FinanceTrackerServiceValidatorTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/META-INF/project_buyanova_natallia.kotlin_module" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/by/javatr/financetracker/controller/stringvalues/StringProperty.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/by/javatr/financetracker/controller/stringvalues/StringProperty.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/by/javatr/financetracker/dao/stringvalues/StringProperty.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/by/javatr/financetracker/dao/stringvalues/StringProperty.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/by/javatr/financetracker/service/stringvalues/StringProperty.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/by/javatr/financetracker/service/stringvalues/StringProperty.class" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -72,8 +71,8 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="JUnit.FinanceTrackerServiceValidatorTest.isValidAccountNameRightName">
-    <configuration name="FinanceTrackerServiceValidatorTest.isValidAccountNameEmptyString" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+  <component name="RunManager" selected="JUnit.ClientServiceValidatorTest.isValidPasswordWithSpace">
+    <configuration name="ClientServiceValidatorTest.isValidPasswordCorrectPassword" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="project_buyanova_natallia" />
       <extension name="coverage">
         <pattern>
@@ -82,14 +81,14 @@
         </pattern>
       </extension>
       <option name="PACKAGE_NAME" value="by.javatr.financetracker.service.validation" />
-      <option name="MAIN_CLASS_NAME" value="by.javatr.financetracker.service.validation.FinanceTrackerServiceValidatorTest" />
-      <option name="METHOD_NAME" value="isValidAccountNameEmptyString" />
+      <option name="MAIN_CLASS_NAME" value="by.javatr.financetracker.service.validation.ClientServiceValidatorTest" />
+      <option name="METHOD_NAME" value="isValidPasswordCorrectPassword" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="FinanceTrackerServiceValidatorTest.isValidAccountNameNullName" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="ClientServiceValidatorTest.isValidPasswordWithComma" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="project_buyanova_natallia" />
       <extension name="coverage">
         <pattern>
@@ -98,14 +97,14 @@
         </pattern>
       </extension>
       <option name="PACKAGE_NAME" value="by.javatr.financetracker.service.validation" />
-      <option name="MAIN_CLASS_NAME" value="by.javatr.financetracker.service.validation.FinanceTrackerServiceValidatorTest" />
-      <option name="METHOD_NAME" value="isValidAccountNameNullName" />
+      <option name="MAIN_CLASS_NAME" value="by.javatr.financetracker.service.validation.ClientServiceValidatorTest" />
+      <option name="METHOD_NAME" value="isValidPasswordWithComma" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="FinanceTrackerServiceValidatorTest.isValidAccountNameRightName" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="ClientServiceValidatorTest.isValidPasswordWithSpace" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="project_buyanova_natallia" />
       <extension name="coverage">
         <pattern>
@@ -114,14 +113,14 @@
         </pattern>
       </extension>
       <option name="PACKAGE_NAME" value="by.javatr.financetracker.service.validation" />
-      <option name="MAIN_CLASS_NAME" value="by.javatr.financetracker.service.validation.FinanceTrackerServiceValidatorTest" />
-      <option name="METHOD_NAME" value="isValidAccountNameRightName" />
+      <option name="MAIN_CLASS_NAME" value="by.javatr.financetracker.service.validation.ClientServiceValidatorTest" />
+      <option name="METHOD_NAME" value="isValidPasswordWithSpace" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="FinanceTrackerServiceValidatorTest.isValidNoteRightNote" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="ClientServiceValidatorTest.isWeakPasswordStrongPassword" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="project_buyanova_natallia" />
       <extension name="coverage">
         <pattern>
@@ -130,14 +129,14 @@
         </pattern>
       </extension>
       <option name="PACKAGE_NAME" value="by.javatr.financetracker.service.validation" />
-      <option name="MAIN_CLASS_NAME" value="by.javatr.financetracker.service.validation.FinanceTrackerServiceValidatorTest" />
-      <option name="METHOD_NAME" value="isValidNoteRightNote" />
+      <option name="MAIN_CLASS_NAME" value="by.javatr.financetracker.service.validation.ClientServiceValidatorTest" />
+      <option name="METHOD_NAME" value="isWeakPasswordStrongPassword" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="FinanceTrackerServiceValidatorTest.isValidNoteStringNullAsNote" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="ClientServiceValidatorTest.isWeakPasswordWithoutCapitalLetter" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="project_buyanova_natallia" />
       <extension name="coverage">
         <pattern>
@@ -146,8 +145,8 @@
         </pattern>
       </extension>
       <option name="PACKAGE_NAME" value="by.javatr.financetracker.service.validation" />
-      <option name="MAIN_CLASS_NAME" value="by.javatr.financetracker.service.validation.FinanceTrackerServiceValidatorTest" />
-      <option name="METHOD_NAME" value="isValidNoteStringNullAsNote" />
+      <option name="MAIN_CLASS_NAME" value="by.javatr.financetracker.service.validation.ClientServiceValidatorTest" />
+      <option name="METHOD_NAME" value="isWeakPasswordWithoutCapitalLetter" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -155,11 +154,11 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="JUnit.FinanceTrackerServiceValidatorTest.isValidAccountNameRightName" />
-        <item itemvalue="JUnit.FinanceTrackerServiceValidatorTest.isValidAccountNameEmptyString" />
-        <item itemvalue="JUnit.FinanceTrackerServiceValidatorTest.isValidAccountNameNullName" />
-        <item itemvalue="JUnit.FinanceTrackerServiceValidatorTest.isValidNoteRightNote" />
-        <item itemvalue="JUnit.FinanceTrackerServiceValidatorTest.isValidNoteStringNullAsNote" />
+        <item itemvalue="JUnit.ClientServiceValidatorTest.isValidPasswordWithSpace" />
+        <item itemvalue="JUnit.ClientServiceValidatorTest.isValidPasswordWithComma" />
+        <item itemvalue="JUnit.ClientServiceValidatorTest.isValidPasswordCorrectPassword" />
+        <item itemvalue="JUnit.ClientServiceValidatorTest.isWeakPasswordStrongPassword" />
+        <item itemvalue="JUnit.ClientServiceValidatorTest.isWeakPasswordWithoutCapitalLetter" />
       </list>
     </recent_temporary>
   </component>

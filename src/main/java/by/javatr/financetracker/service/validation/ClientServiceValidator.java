@@ -4,7 +4,7 @@ import by.javatr.financetracker.service.stringvalues.StringProperty;
 
 public class ClientServiceValidator {
     public static boolean isValidLogIn(String logIn) {
-        String invalidCharacters = StringProperty.getStringValue("invalidLogInCharacters");
+        String invalidCharacters = StringProperty.getStringValue("invalidDAOCharacters");
         for (char c : logIn.toCharArray()) {
             if (invalidCharacters.indexOf(c) != -1) {
                 return false;
@@ -14,7 +14,7 @@ public class ClientServiceValidator {
     }
 
     public static boolean isValidPassword(char[] password) {
-        String invalidCharacters = StringProperty.getStringValue("invalidLogInCharacters");
+        String invalidCharacters = StringProperty.getStringValue("invalidDAOCharacters");
         for (char c : password) {
             if (invalidCharacters.indexOf(c) != -1) {
                 return false;

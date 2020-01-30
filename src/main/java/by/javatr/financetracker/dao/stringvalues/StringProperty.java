@@ -10,7 +10,7 @@ public class StringProperty {
     static {
         properties = new Properties();
         try {
-            properties.load(new FileReader("src/main/java/resources/properties/DAOString.properties"));
+            properties.load(new FileReader("src/main/resources/properties/DAOString.properties"));
         } catch (IOException e) {
             throw new IOError(e);
         }
