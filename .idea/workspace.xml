@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="1a9c9a27-e7c9-43af-ace8-407358342ba2" name="Default Changelist" comment="">
+<<<<<<< HEAD
       <change afterPath="$PROJECT_DIR$/src/test/java/by/javatr/financetracker/service/validation/ClientServiceValidatorTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/by/javatr/financetracker/controller/stringvalues/StringProperty.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/by/javatr/financetracker/controller/stringvalues/StringProperty.java" afterDir="false" />
@@ -15,6 +16,125 @@
       <change beforePath="$PROJECT_DIR$/target/classes/by/javatr/financetracker/controller/stringvalues/StringProperty.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/by/javatr/financetracker/controller/stringvalues/StringProperty.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/by/javatr/financetracker/dao/stringvalues/StringProperty.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/by/javatr/financetracker/dao/stringvalues/StringProperty.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/by/javatr/financetracker/service/stringvalues/StringProperty.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/by/javatr/financetracker/service/stringvalues/StringProperty.class" afterDir="false" />
+=======
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/by/javatr/financetracker/bean/Account.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/by/javatr/financetracker/entity/Account.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/by/javatr/financetracker/bean/Expense.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/by/javatr/financetracker/entity/Expense.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/by/javatr/financetracker/bean/ExpenseCategory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/by/javatr/financetracker/entity/ExpenseCategory.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/by/javatr/financetracker/bean/Income.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/by/javatr/financetracker/entity/Income.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/by/javatr/financetracker/bean/IncomeCategory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/by/javatr/financetracker/entity/IncomeCategory.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/by/javatr/financetracker/bean/Transaction.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/by/javatr/financetracker/entity/Transaction.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/by/javatr/financetracker/bean/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/by/javatr/financetracker/entity/User.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/by/javatr/financetracker/controller/command/impl/AddAccount.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/by/javatr/financetracker/controller/command/impl/AddAccount.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/by/javatr/financetracker/controller/command/impl/AddExpense.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/by/javatr/financetracker/controller/command/impl/AddExpense.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/by/javatr/financetracker/controller/command/impl/AddIncome.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/by/javatr/financetracker/controller/command/impl/AddIncome.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/by/javatr/financetracker/controller/command/impl/ChangePassword.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/by/javatr/financetracker/controller/command/impl/ChangePassword.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/by/javatr/financetracker/controller/command/impl/DeactivateUserAccount.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/by/javatr/financetracker/controller/command/impl/DeactivateUserAccount.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/by/javatr/financetracker/controller/command/impl/DeleteAccount.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/by/javatr/financetracker/controller/command/impl/DeleteAccount.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/by/javatr/financetracker/controller/command/impl/DeleteExpense.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/by/javatr/financetracker/controller/command/impl/DeleteExpense.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/by/javatr/financetracker/controller/command/impl/DeleteIncome.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/by/javatr/financetracker/controller/command/impl/DeleteIncome.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/by/javatr/financetracker/controller/command/impl/EditAccount.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/by/javatr/financetracker/controller/command/impl/EditAccount.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/by/javatr/financetracker/controller/command/impl/EditExpense.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/by/javatr/financetracker/controller/command/impl/EditExpense.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/by/javatr/financetracker/controller/command/impl/EditIncome.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/by/javatr/financetracker/controller/command/impl/EditIncome.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/by/javatr/financetracker/controller/command/impl/EditLogIn.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/by/javatr/financetracker/controller/command/impl/EditLogIn.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/by/javatr/financetracker/controller/command/impl/GetAccounts.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/by/javatr/financetracker/controller/command/impl/GetAccounts.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/by/javatr/financetracker/controller/command/impl/GetCurrentBalance.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/by/javatr/financetracker/controller/command/impl/GetCurrentBalance.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/by/javatr/financetracker/controller/command/impl/GetExpensesByCategory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/by/javatr/financetracker/controller/command/impl/GetExpensesByCategory.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/by/javatr/financetracker/controller/command/impl/GetIncomesByCategory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/by/javatr/financetracker/controller/command/impl/GetIncomesByCategory.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/by/javatr/financetracker/controller/command/impl/GetTransactionsHistory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/by/javatr/financetracker/controller/command/impl/GetTransactionsHistory.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/by/javatr/financetracker/controller/command/impl/GetTransactionsHistoryByDate.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/by/javatr/financetracker/controller/command/impl/GetTransactionsHistoryByDate.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/by/javatr/financetracker/controller/command/impl/LogIn.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/by/javatr/financetracker/controller/command/impl/LogIn.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/by/javatr/financetracker/controller/command/impl/SignUp.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/by/javatr/financetracker/controller/command/impl/SignUp.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/by/javatr/financetracker/controller/command/impl/TransferMoney.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/by/javatr/financetracker/controller/command/impl/TransferMoney.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/by/javatr/financetracker/controller/command/impl/WrongRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/by/javatr/financetracker/controller/command/impl/WrongRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/by/javatr/financetracker/controller/stringvalues/StringProperty.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/by/javatr/financetracker/controller/constants/StringProperty.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/by/javatr/financetracker/dao/AccountDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/by/javatr/financetracker/dao/AccountDAO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/by/javatr/financetracker/dao/ExpenseDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/by/javatr/financetracker/dao/ExpenseDAO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/by/javatr/financetracker/dao/IncomeDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/by/javatr/financetracker/dao/IncomeDAO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/by/javatr/financetracker/dao/UserDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/by/javatr/financetracker/dao/UserDAO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/by/javatr/financetracker/dao/factory/DAOFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/by/javatr/financetracker/dao/factory/DAOFactory.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/by/javatr/financetracker/dao/impl/FileAccountDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/by/javatr/financetracker/dao/impl/FileAccountDAO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/by/javatr/financetracker/dao/impl/FileExpenseDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/by/javatr/financetracker/dao/impl/FileExpenseDAO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/by/javatr/financetracker/dao/impl/FileIncomeDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/by/javatr/financetracker/dao/impl/FileIncomeDAO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/by/javatr/financetracker/dao/impl/FileUserDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/by/javatr/financetracker/dao/impl/FileUserDAO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/by/javatr/financetracker/dao/stringvalues/StringProperty.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/by/javatr/financetracker/dao/constants/StringProperty.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/by/javatr/financetracker/service/ClientService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/by/javatr/financetracker/service/ClientService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/by/javatr/financetracker/service/FinanceTrackerService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/by/javatr/financetracker/service/FinanceTrackerService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/by/javatr/financetracker/service/impl/ClientServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/by/javatr/financetracker/service/impl/ClientServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/by/javatr/financetracker/service/impl/FinanceTrackerServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/by/javatr/financetracker/service/impl/FinanceTrackerServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/by/javatr/financetracker/service/stringvalues/StringProperty.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/by/javatr/financetracker/service/constants/StringProperty.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/by/javatr/financetracker/service/validation/ClientServiceValidator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/by/javatr/financetracker/service/validation/ClientServiceValidator.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/META-INF/project_buyanova_natallia.kotlin_module" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/accounts.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/by/javatr/financetracker/bean/Account.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/by/javatr/financetracker/bean/Expense.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/by/javatr/financetracker/bean/ExpenseCategory.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/by/javatr/financetracker/bean/Income.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/by/javatr/financetracker/bean/IncomeCategory.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/by/javatr/financetracker/bean/Transaction.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/by/javatr/financetracker/bean/User.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/by/javatr/financetracker/controller/CommandProvider.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/by/javatr/financetracker/controller/Controller.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/by/javatr/financetracker/controller/command/Command.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/by/javatr/financetracker/controller/command/CommandName.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/by/javatr/financetracker/controller/command/impl/AddAccount.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/by/javatr/financetracker/controller/command/impl/AddExpense.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/by/javatr/financetracker/controller/command/impl/AddIncome.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/by/javatr/financetracker/controller/command/impl/ChangePassword.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/by/javatr/financetracker/controller/command/impl/DeactivateUserAccount.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/by/javatr/financetracker/controller/command/impl/DeleteAccount.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/by/javatr/financetracker/controller/command/impl/DeleteExpense.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/by/javatr/financetracker/controller/command/impl/DeleteIncome.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/by/javatr/financetracker/controller/command/impl/EditAccount.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/by/javatr/financetracker/controller/command/impl/EditExpense.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/by/javatr/financetracker/controller/command/impl/EditIncome.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/by/javatr/financetracker/controller/command/impl/EditLogIn.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/by/javatr/financetracker/controller/command/impl/GetAccounts.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/by/javatr/financetracker/controller/command/impl/GetCurrentBalance.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/by/javatr/financetracker/controller/command/impl/GetExpensesByCategory.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/by/javatr/financetracker/controller/command/impl/GetIncomesByCategory.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/by/javatr/financetracker/controller/command/impl/GetTransactionsHistory.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/by/javatr/financetracker/controller/command/impl/GetTransactionsHistoryByDate.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/by/javatr/financetracker/controller/command/impl/LogIn.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/by/javatr/financetracker/controller/command/impl/SignUp.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/by/javatr/financetracker/controller/command/impl/TransferMoney.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/by/javatr/financetracker/controller/command/impl/WrongRequest.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/by/javatr/financetracker/controller/stringvalues/StringProperty.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/by/javatr/financetracker/dao/AccountDAO.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/by/javatr/financetracker/dao/ExpenseDAO.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/by/javatr/financetracker/dao/IncomeDAO.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/by/javatr/financetracker/dao/UserDAO.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/by/javatr/financetracker/dao/exception/DAOException.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/by/javatr/financetracker/dao/factory/DAOFactory.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/by/javatr/financetracker/dao/impl/FileAccountDAO.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/by/javatr/financetracker/dao/impl/FileExpenseDAO.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/by/javatr/financetracker/dao/impl/FileIncomeDAO.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/by/javatr/financetracker/dao/impl/FileUserDAO.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/by/javatr/financetracker/dao/stringvalues/StringProperty.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/by/javatr/financetracker/service/ClientService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/by/javatr/financetracker/service/FinanceTrackerService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/by/javatr/financetracker/service/exception/ClientServiceException.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/by/javatr/financetracker/service/exception/FinanceTrackerServiceException.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/by/javatr/financetracker/service/factory/ServiceFactory.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/by/javatr/financetracker/service/impl/ClientServiceImpl.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/by/javatr/financetracker/service/impl/FinanceTrackerServiceImpl$1.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/by/javatr/financetracker/service/impl/FinanceTrackerServiceImpl$TransactionByDateComparator.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/by/javatr/financetracker/service/impl/FinanceTrackerServiceImpl.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/by/javatr/financetracker/service/stringvalues/StringProperty.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/by/javatr/financetracker/service/validation/Validator.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/by/javatr/financetracker/view/Main.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/properties/DAOString.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/properties/controllerString.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/properties/serviceString.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/transactions.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/transfer.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/users.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/maven-archiver/pom.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/testCompile/default-testCompile/inputFiles.lst" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/project_buyanova_natallia-1.0-SNAPSHOT.jar" beforeDir="false" />
+>>>>>>> Merge master with test
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
