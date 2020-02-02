@@ -20,6 +20,8 @@ public class FinanceTrackerServiceImpl implements FinanceTrackerService {
     private ExpenseDAO expenseDAO = daoFactory.getExpenseDAO();
     private IncomeDAO incomeDAO = daoFactory.getIncomeDAO();
 
+    private FinanceTrackerServiceValidator validator = new FinanceTrackerServiceValidator();
+
     @Override
     public void addExpense(int userId, Expense expense) throws ServiceException {
 
@@ -27,15 +29,15 @@ public class FinanceTrackerServiceImpl implements FinanceTrackerService {
             throw new ServiceException("Null expense.");
         }
 
-        if (!FinanceTrackerServiceValidator.isValidTransactionSum(expense.getSum())) {
+        if (!validator.isValidTransactionSum(expense.getSum())) {
             throw new ServiceException("Invalid transaction sum.");
         }
 
-        if (!FinanceTrackerServiceValidator.isValidTransactionDate(expense.getDate())) {
+        if (!validator.isValidTransactionDate(expense.getDate())) {
             throw new ServiceException("Invalid transaction date.");
         }
 
-        if (!FinanceTrackerServiceValidator.isValidNote(expense.getNote())) {
+        if (!validator.isValidNote(expense.getNote())) {
             throw new ServiceException("Null note.");
         }
 
@@ -62,15 +64,15 @@ public class FinanceTrackerServiceImpl implements FinanceTrackerService {
             throw new ServiceException("Null expense.");
         }
 
-        if (!FinanceTrackerServiceValidator.isValidTransactionSum(editedExpense.getSum())) {
+        if (!validator.isValidTransactionSum(editedExpense.getSum())) {
             throw new ServiceException("Invalid transaction sum.");
         }
 
-        if (!FinanceTrackerServiceValidator.isValidTransactionDate(editedExpense.getDate())) {
+        if (!validator.isValidTransactionDate(editedExpense.getDate())) {
             throw new ServiceException("Invalid transaction date.");
         }
 
-        if (!FinanceTrackerServiceValidator.isValidNote(editedExpense.getNote())) {
+        if (!validator.isValidNote(editedExpense.getNote())) {
             throw new ServiceException("Null note.");
         }
 
@@ -132,15 +134,15 @@ public class FinanceTrackerServiceImpl implements FinanceTrackerService {
             throw new ServiceException("Null income.");
         }
 
-        if (!FinanceTrackerServiceValidator.isValidTransactionSum(income.getSum())) {
+        if (!validator.isValidTransactionSum(income.getSum())) {
             throw new ServiceException("Invalid transaction sum.");
         }
 
-        if (!FinanceTrackerServiceValidator.isValidTransactionDate(income.getDate())) {
+        if (!validator.isValidTransactionDate(income.getDate())) {
             throw new ServiceException("Invalid transaction date.");
         }
 
-        if (!FinanceTrackerServiceValidator.isValidNote(income.getNote())) {
+        if (!validator.isValidNote(income.getNote())) {
             throw new ServiceException("Null note.");
         }
 
@@ -166,15 +168,15 @@ public class FinanceTrackerServiceImpl implements FinanceTrackerService {
             throw new ServiceException("Null income.");
         }
 
-        if (!FinanceTrackerServiceValidator.isValidTransactionSum(editedIncome.getSum())) {
+        if (!validator.isValidTransactionSum(editedIncome.getSum())) {
             throw new ServiceException("Invalid transaction sum.");
         }
 
-        if (!FinanceTrackerServiceValidator.isValidTransactionDate(editedIncome.getDate())) {
+        if (!validator.isValidTransactionDate(editedIncome.getDate())) {
             throw new ServiceException("Invalid transaction date.");
         }
 
-        if (!FinanceTrackerServiceValidator.isValidNote(editedIncome.getNote())) {
+        if (!validator.isValidNote(editedIncome.getNote())) {
             throw new ServiceException("Null note.");
         }
 
@@ -235,7 +237,7 @@ public class FinanceTrackerServiceImpl implements FinanceTrackerService {
             throw new ServiceException("Null account.");
         }
 
-        if (!FinanceTrackerServiceValidator.isValidAccountName(account.getName())) {
+        if (!validator.isValidAccountName(account.getName())) {
             throw new ServiceException("Null account name.");
         }
 
@@ -252,7 +254,7 @@ public class FinanceTrackerServiceImpl implements FinanceTrackerService {
             throw new ServiceException("Null account.");
         }
 
-        if (!FinanceTrackerServiceValidator.isValidAccountName(editedAccount.getName())) {
+        if (!validator.isValidAccountName(editedAccount.getName())) {
             throw new ServiceException("Null account name.");
         }
 
@@ -364,7 +366,7 @@ public class FinanceTrackerServiceImpl implements FinanceTrackerService {
             throw new ServiceException("Attempt to transfer money to the same account");
         }
 
-        if (!FinanceTrackerServiceValidator.isValidTransactionSum(sum)) {
+        if (!validator.isValidTransactionSum(sum)) {
             throw new ServiceException("Invalid transaction sum");
         }
 

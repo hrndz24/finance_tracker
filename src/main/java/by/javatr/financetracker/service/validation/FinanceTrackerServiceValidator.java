@@ -5,19 +5,19 @@ import java.util.Date;
 
 public class FinanceTrackerServiceValidator {
 
-    public static boolean isValidTransactionSum(BigDecimal sum) {
+    public boolean isValidTransactionSum(BigDecimal sum) {
         return sum != null && sum.doubleValue() > 0;
     }
 
-    public static boolean isValidTransactionDate(Date date) {
+    public boolean isValidTransactionDate(Date date) {
         return date != null && date.before(new Date());
     }
 
-    public static boolean isValidNote(String note) {
+    public boolean isValidNote(String note) {
         return note != null && !note.equals("null");
     }
 
-    public static boolean isValidAccountName(String name) {
+    public boolean isValidAccountName(String name) {
         return name != null && !name.isEmpty();
     }
 }

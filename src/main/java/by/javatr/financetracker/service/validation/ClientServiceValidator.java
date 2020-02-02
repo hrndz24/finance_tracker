@@ -3,7 +3,8 @@ package by.javatr.financetracker.service.validation;
 import by.javatr.financetracker.service.constants.StringProperty;
 
 public class ClientServiceValidator {
-    public static boolean isValidLogIn(String logIn) {
+
+    public boolean isValidLogIn(String logIn) {
         String invalidCharacters = StringProperty.getStringValue("invalidDAOCharacters");
         for (char c : logIn.toCharArray()) {
             if (invalidCharacters.indexOf(c) != -1) {
@@ -13,7 +14,7 @@ public class ClientServiceValidator {
         return true;
     }
 
-    public static boolean isValidPassword(char[] password) {
+    public boolean isValidPassword(char[] password) {
         String invalidCharacters = StringProperty.getStringValue("invalidDAOCharacters");
         for (char c : password) {
             if (invalidCharacters.indexOf(c) != -1) {
@@ -23,7 +24,7 @@ public class ClientServiceValidator {
         return true;
     }
 
-    public static boolean isWeakPassword(char[] password) {
+    public boolean isWeakPassword(char[] password) {
         if (password.length < 8) {
             return true;
         }

@@ -25,6 +25,8 @@ public class ClientServiceImpl implements ClientService {
     private IncomeDAO incomeDAO = daoFactory.getIncomeDAO();
     private UserDAO userDAO = daoFactory.getUserDao();
 
+    private ClientServiceValidator validator = new ClientServiceValidator();
+
     @Override
     public User signUp(String logIn, char[] password) throws ServiceException {
         if (logIn == null || logIn.isEmpty()) {
@@ -35,15 +37,15 @@ public class ClientServiceImpl implements ClientService {
             throw new ServiceException("Null password.");
         }
 
-        if (ClientServiceValidator.isWeakPassword(password)) {
+        if (validator.isWeakPassword(password)) {
             throw new ServiceException("Weak password.");
         }
 
-        if (!ClientServiceValidator.isValidPassword(password)) {
+        if (!validator.isValidPassword(password)) {
             throw new ServiceException("Invalid password characters.");
         }
 
-        if (!ClientServiceValidator.isValidLogIn(logIn)) {
+        if (!validator.isValidLogIn(logIn)) {
             throw new ServiceException("Invalid logIn characters.");
         }
 
@@ -134,7 +136,7 @@ public class ClientServiceImpl implements ClientService {
         if (newLogIn == null || newLogIn.isEmpty()) {
             throw new ServiceException("Null new logIn.");
         }
-        if (!ClientServiceValidator.isValidLogIn(newLogIn)) {
+        if (!validator.isValidLogIn(newLogIn)) {
             throw new ServiceException("LogIn contains invalid characters");
         }
 
@@ -159,10 +161,10 @@ public class ClientServiceImpl implements ClientService {
         if (oldPassword == null || newPassword == null) {
             throw new ServiceException("Null password.");
         }
-        if (ClientServiceValidator.isWeakPassword(newPassword)) {
+        if (validator.isWeakPassword(newPassword)) {
             throw new ServiceException("Weak password.");
         }
-        if (!ClientServiceValidator.isValidPassword(newPassword)) {
+        if (!validator.isValidPassword(newPassword)) {
             throw new ServiceException("Password contains invalid characters.");
         }
 

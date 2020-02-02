@@ -3,6 +3,7 @@ package by.javatr.financetracker.controller.command.impl;
 import by.javatr.financetracker.entity.User;
 import by.javatr.financetracker.controller.command.Command;
 import by.javatr.financetracker.controller.constants.StringProperty;
+import by.javatr.financetracker.exception.ServiceException;
 import by.javatr.financetracker.service.ClientService;
 import by.javatr.financetracker.factory.ServiceFactory;
 
